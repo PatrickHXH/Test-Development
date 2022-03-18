@@ -16,19 +16,21 @@ from django.utils import timezone
 #     City = models.CharField(max_length=255,null=True)
 
 class Question(models.Model):
-    question_text = models.CharField(max_length=200)
-    question_desc = models.TextField(null=True,default="")
+    question_text = models.CharField(max_length=200)    #定义char类型字段，最大长度为200
+    question_desc = models.TextField(null=True,default="")  #定义为非必填，默认为空字符串
     pub_date = models.DateTimeField('date published')
 
     def was_published_recently(self):
         return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
 
     def __str__(self):
-        return  self.question_text
+        return  self.question_text  #表中数据对象用名称表示
 
 class Choice(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)      #定义为外键，on_delete必填，models.CASCADE为联级删除
     choice_text = models.CharField(max_length=200)
-    votes = models.IntegerField(default=0)
+    votes = models.IntegerField(default=0)              #定义为int字段，默认为0
     def __str__(self):
-        return  self.choice_text
+        return  self.choice_text    #表中数据对象用名称表示
+
+
