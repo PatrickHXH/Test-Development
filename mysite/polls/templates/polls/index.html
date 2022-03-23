@@ -4,7 +4,7 @@
     <ul>
     {% for i in question_list %}
 <!--        <li><a href="/polls/{{ i.id }}/">{{ i.question_text }}-{{i.pub_date | date:"Y-m-d H:i:s"}}</a></li>-->
-        <li><a href="{% url 'detail' i.id %}">{{ i.question_text }}-{{i.pub_date | date:"Y-m-d H:i:s"}}</a></li>
+        <li ><a   id="{{i.id}}" href="{% url 'detail' i.id %}">{{ i.question_text }}-{{i.pub_date | date:"Y-m-d H:i:s"}}</a></li>
     {% endfor %}
     </ul>
 {% else %}

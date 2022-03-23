@@ -1,14 +1,20 @@
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from selenium import WebDriver
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from  polls.models import Question,Choice
+from django.utils import timezone
+
 
 class MySeleniumTests(StaticLiveServerTestCase):
-
 
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.selenium = WebDriver.Chrome()
+        cls.selenium = webdriver.Chrome()
         cls.selenium.implicitly_wait(10)
+        Question.objects.create(id=1,question_text="what's new?",pub_date=timezone.now())
+        Choice.objects.create(id=1,choice_text='Not Much',votes=0,question_id=1)
+        Choice.objects.create(id=2,choice_text='The sky',votes=0,question_id=1)
 
     @classmethod
     def tearDownClass(cls):
@@ -16,14 +22,51 @@ class MySeleniumTests(StaticLiveServerTestCase):
         super().tearDownClass()
 
     def test_login(self):
-        self.selenium.get('%s%s' % (self.live_server_url, '/login/'))
-        username_input = self.selenium.find_element_by_name("username")
-        username_input.send_keys('myuser')
-        password_input = self.selenium.find_element_by_name("password")
-        password_input.send_keys('secret')
-        self.selenium.find_element_by_xpath('//input[@value="Log in"]').click()
+        self.selenium.get('%s%s' % (self.live_server_url, '/polls/'))
+        self.selenium.find_element(By.ID,"1").click()
+        self.selenium.find_element(By.XPATH,"//input[@type='radio' and @ value='1']").click()
+        self.selenium.find_element(By.ID, "voteButton").click()
+        vote_number = self.selenium.find_element(By.ID, "1").text
+        self.assertEqual(vote_number, "1")
 
-        selenium.get("http://127.0.0.1:8000/polls")
-        selenium.find_element(By.ID,"1").click()
-        selenium.find_element(By.XPATH,"//input[@type='radio' and @ value='1']").click()
-        selenium.find_element(By.ID, "voteButton").click()
+
+
+
+# from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+# from selenium import webdriver
+# from selenium.webdriver.common.by import By
+# from polls.models import Question, Choice
+# from django.utils import timezone
+# from time import sleep
+#
+#
+# class MySeleniumTests(StaticLiveServerTestCase):
+#
+#     @classmethod
+#     def setUpClass(cls):
+#         super().setUpClass()
+#         cls.selenium = webdriver.Firefox()
+#         cls.selenium.implicitly_wait(10)
+#
+#     @classmethod
+#     def tearDownClass(cls):
+#         cls.selenium.quit()
+#         super().tearDownClass()
+#
+#     def setUp(self):
+#         Question.objects.create(id=1, question_text="what is new?", pub_date=timezone.now())
+#         Choice.objects.create(id=1, choice_text='Not much', votes=0, question_id=1)
+#         Choice.objects.create(id=2, choice_text='The sky', votes=0, question_id=1)
+#
+#     def test_login(self):
+#         self.selenium.get('%s%s' % (self.live_server_url, '/polls/'))
+#         sleep(2)
+#         self.selenium.find_element(By.ID, "1").click()
+#         sleep(2)
+#         self.selenium.find_element(By.XPATH, "//input[@type='radio' and @value='1']").click()  # not much
+#         sleep(2)
+#         self.selenium.find_element(By.ID, "voteButton").click()
+#         sleep(2)
+#         vote_number = self.selenium.find_elements(By.XPATH, "//div[@class='progress']/p")[0].text
+#         print(vote_number)
+#         self.assertEqual(vote_number, "1")
