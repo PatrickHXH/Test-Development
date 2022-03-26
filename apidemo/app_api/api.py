@@ -1,20 +1,21 @@
-from ninja import NinjaAPI,Form
+from ninja import NinjaAPI,Form,Router
 from ninja import Schema, Path
 import  datetime
 from django.contrib.auth.models import User
-api = NinjaAPI( )
 
-@api.get("/add")
+router= Router(tags=["app_api"])
+
+@router.get("/add")
 def add(request,a:int,b:int,c:int):
     return  {"resutlt": a+b}
 #相同接口多种方法
-@api.api_operation(["GET","POST","DELETE"],"/user/{user_id}/")
+@router.api_operation(["GET","POST","DELETE"],"/user/{user_id}/")
 def user(request,user_id:int):
     if request.method == "GET":
         return  {"result":"get user info"}
     if request.method == "DELETE":
         return  {"result":"DELETE user info"}
-@api.get("/items/{item_id}")
+@router.get("/items/{item_id}")
 def read_item(request, item_id):
     return {"item_id": item_id}
 
@@ -26,7 +27,7 @@ class PathDate(Schema):
     day: int
     def value(self):
         return datetime.date(self.year, self.month,self.day)
-@api.get("events/{year}/{month}/{day}")
+@router.get("events/{year}/{month}/{day}")
 def events(request,date:PathDate=Path(...)):
     return {"date":date.value()}
 
@@ -34,7 +35,7 @@ def events(request,date:PathDate=Path(...)):
 #GET在URL中传参,格式api/xx&xx
 from ninja import NinjaAPI
 weapons = ["Ninjato", "Shuriken", "Katana", "Kama", "Kunai", "Naginata", "Yari"]
-@api.get("/weapons")
+@router.get("/weapons")
 def list_weapons(request, limit: int = None, offset: int = 0):
     if limit is None:
         limit = 10
@@ -50,7 +51,7 @@ class Filters(Schema):
     offset: int = None
     query: str = None
     category__in: List[str] = Field(None, alias="categories")    #Field（非空，别名）
-@api.get("/filter")
+@router.get("/filter")
 def events(request, filters: Filters = Query(...)):
     return {"filters": filters.dict()}
 
@@ -60,16 +61,16 @@ class Item(Schema):
     description: str = None
     price: float
     quantity: int
-@api.post("/items")
+@router.post("/items")
 def create(request, item: Item):
     return item
-@api.post("/items/{item_id}")
+@router.post("/items/{item_id}")
 def update(request,item_id:int, item: Item):
     return {"item_id": item_id, "item": item.dict()}
 
 #form-data格式传参，可以上传文件
 from ninja import NinjaAPI,Form
-@api.post("login")
+@router.post("login")
 def login(request,username:str = Form(...),passwd:str = Form(...)):
     return {"username":username,'password':'*********'}
 
@@ -101,7 +102,7 @@ file_type = ["png","jpg","jpeg","txt"]
 import os
 from ninja import NinjaAPI, File
 from ninja.files import UploadedFile
-@api.post("/upload")
+@router.post("/upload")
 def upload(request, file: UploadedFile = File(...)):
     data = file.read()
     # print(file.name)
@@ -127,7 +128,7 @@ class UserOut(Schema):
     id:int
     username:str
     password:str
-@api.post("/users/",response=UserOut)
+@router.post("/users/",response=UserOut)
 def create_user(request,data:UserIn):
     user = User(username=data.username)
     user.set_password(data.password)
@@ -169,7 +170,7 @@ class TaskSchema(Schema):    #返回中定义方法
         return f"{obj.owner.first_name} {obj.owner.last_name}"
     def resolve_lower_title(self,obj):
         return self.title.lower()
-@api.get("/tasks", response=List[TaskSchema])
+@router.get("/tasks", response=List[TaskSchema])
 def tasks(request):
     queryset = Task.objects.select_related("owner")
     return list(queryset)
@@ -182,7 +183,7 @@ class Message(Schema):
     message: str
 class Auth(Schema):
     token: str
-@api.post('/login2', response={200: Token, 401: Message, 402: Message})
+@router.post('/login2', response={200: Token, 401: Message, 402: Message})
 def login2(request, payload: Auth):
     if payload.token == 1:
         return 401, {'message': 'Unauthorized'}
