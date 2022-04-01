@@ -46,10 +46,10 @@ def user_login(request,data:LoginIn):
         else:
             return response(error=Error.USER_OR_PAWD_EROOR)
 
-@router.get("/bearer")
-def bearer(request):
-    """
-    假设，必须要登录之后才能访问
-    测试：获取session
-    """
-    return {"session": "测试"}
+# @router.get("/bearer")
+# def bearer(request):
+#     """
+#     假设，必须要登录之后才能访问
+#     测试：获取token
+#     """
+#     return {"session": request.auth}

@@ -6,7 +6,14 @@ class Error:
     USER_OR_PAWD_EROOR={"10011":"用户名或密码错误"}
     PAWD_ERROR = {"10012":"两次密码不一致"}
     USER_EXIST = {"10013":"用户已被注册"}
+    PROJECT_NAME_EXIST={"10014":"项目名字已存在"}
+    PROJECT_NOT_EXIST={"10015":"项目不存在"}
+    PROJECT_IS_DELETE = {"10016":"项目已删除"}
+    FLIE_TYPE_ERROR = {"10017":"不支持该文件类型上传"}
 
+    MODULE_NAME_EXIST={"10018":"模块名字已存在"}
+    MODULE_NOT_EXIST={"10019":"模块不存在"}
+    MODULE_IS_DELETE = {"10020":"模块已删除"}
 
 def response(success:bool = True, error = None, result=[]):
     if error is None:
