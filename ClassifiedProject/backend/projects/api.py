@@ -4,10 +4,10 @@ from ninja import Router,File
 from django.forms.models import model_to_dict
 from backend.common import response,Error
 from backend.pagination import CustomPagination
+from ninja.pagination import paginate,PageNumberPagination  #分页
+from typing import List
 from projects.api_schema import ProjectIn,ProjectOut
 from projects.models import Project
-from typing import List
-from ninja.pagination import paginate,PageNumberPagination  #分页
 from django.db.models import QuerySet
 from django.shortcuts import get_object_or_404
 from ninja.files import UploadedFile
@@ -29,7 +29,7 @@ def create_project(request,data:ProjectIn):
         return  response()
 
 #项目列表接口
-@router.get("/list",auth=None,response=List[ProjectOut])
+@router.get("/list",auth=None,response=List[ProjectOut])  #自定义分页必须加response
 @paginate(CustomPagination)
 def project_list(request):
     projects = Project.objects.filter(is_delete=False).all()
@@ -47,7 +47,7 @@ def project_detail(request,project_id:int):
     #     return response(error=Error.PROJECT_NAME_EXIST)
     # else:
     project = get_object_or_404(Project,id=project_id)
-    if project.id is False:
+    if project.is_delete is True:
         return  response(error=Error.PROJECT_IS_DELETE)
     else:
         data = {
@@ -66,6 +66,10 @@ def project_update(request,project_id:int,data:ProjectIn):
     for atr,value in data.dict().items():
         setattr(project,atr,value)
     project.save()
+    '''
+        Project.objects.filter(id=project_id).update(image=data.image, name=data.describe,describe=data.describe)
+
+    '''
     return response()
 
 #删除项目接口
@@ -80,7 +84,7 @@ def project_delete(request,project_id:int):
 
 @router.post("/upload/",auth=None)
 def upload(request, file: UploadedFile = File(...)):
-    data = file.read()
+    # data = file.read()
     # print(file.name)
     # print(file.size)
     file_type = ["png", "jpg", "jpeg", "txt"]
@@ -94,6 +98,6 @@ def upload(request, file: UploadedFile = File(...)):
         file_dir = os.path.dirname(os.path.abspath(__file__))
         upload_file= os.path.join(file_dir,"..\\resources\\img",file.name)
         with open(upload_file,"wb") as f:
-            for chunk in file.chunks():
+            for chunk in file.chunks():   #file.chunks()类似与file.read()
                 f.write(chunk)
         return response(result={"name":file_name})

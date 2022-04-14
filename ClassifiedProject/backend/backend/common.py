@@ -15,6 +15,12 @@ class Error:
     MODULE_NOT_EXIST={"10019":"模块不存在"}
     MODULE_IS_DELETE = {"10020":"模块已删除"}
 
+    CASE_METHOD_ERROR = {"10051":"请求方法错误"}
+    CASE_HEADER_ERROR = {"10052":"请求header错误"}
+    CASE_PARAMS_ERROR = {"10053":"请求参数类型错误"}
+    CASE_ASSERT_ERROR = {"10054":"请求参数类型错误"}
+    CASE_DELETE_ERROR = {"10055":"用例已删除"}
+
 def response(success:bool = True, error = None, result=[]):
     if error is None:
         error_code = ""

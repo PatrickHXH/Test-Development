@@ -35,6 +35,7 @@ def user_login(request,data:LoginIn):
     else:
         user = auth.authenticate(username=username,password=password)
         if user is not None:
+            #auth.login登录保存session到表里
             auth.login(request,user)
             session = Session.objects.last()
             user_info = {
@@ -46,10 +47,10 @@ def user_login(request,data:LoginIn):
         else:
             return response(error=Error.USER_OR_PAWD_EROOR)
 
-# @router.get("/bearer")
-# def bearer(request):
-#     """
-#     假设，必须要登录之后才能访问
-#     测试：获取token
-#     """
-#     return {"session": request.auth}
+@router.get("/bearer")
+def bearer(request):
+    """
+    假设，必须要登录之后才能访问
+    测试：获取session
+    """
+    return {"session": request.auth}
