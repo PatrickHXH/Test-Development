@@ -33,10 +33,7 @@ def create_project(request,data:ProjectIn):
 @paginate(CustomPagination)
 def project_list(request):
     projects = Project.objects.filter(is_delete=False).all()
-    data = []
-    for i in projects:
-        data.append(model_to_dict(i))
-    return data
+    return projects
 
 #获取详情接口
 @router.get("/{project_id}",auth=None)
