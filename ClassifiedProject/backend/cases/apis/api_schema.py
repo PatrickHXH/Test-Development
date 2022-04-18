@@ -47,14 +47,14 @@ class CaseIn(Schema):
 
 class CaseDebugIn(Schema):
     url:str
-    method:str
+    method:Method
     header:dict
-    params_type:str
+    params_type:ParamsType
     params_body:dict
 
 class CaseAssertIn(Schema):
     response:str
-    assert_type:str
+    assert_type:AssertType
     assert_text:str
 
 
@@ -69,7 +69,6 @@ class CaseOut(Schema):
     module_id: int
     url: str
     method: str
-    module: ModuleSchema = None  # 关联模块
+    # module: ModuleSchema = None  # 关联模块
     create_time: Any
     update_time: Any
-

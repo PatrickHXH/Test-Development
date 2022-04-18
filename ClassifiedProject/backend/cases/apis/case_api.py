@@ -32,10 +32,10 @@ def debug_case(request,data:CaseDebugIn):
     params_type = data.params_type
     params_body = data.params_body
 
-    if method not in  ["get","post"]:
-        return response(error=Error.CASE_METHOD_ERROR)
-    if params_type not in ["params","form","json"]:
-        return response(error=Error.CASE_PARAMS_ERROR)
+    # if method not in  ["get","post"]:
+    #     return response(error=Error.CASE_METHOD_ERROR)
+    # if params_type not in ["params","form","json"]:
+    #     return response(error=Error.CASE_PARAMS_ERROR)
 
     if method == "get":
         resp = requests.get(url,params=params_body)
@@ -61,8 +61,8 @@ def assert_case(request, data: CaseAssertIn):
     assert_type = data.assert_type
     assert_text = data.assert_text
 
-    if assert_type not in ["include", "equal"]:
-        return response(error=Error.CASE_ASSERT_ERROR)
+    # if assert_type not in ["include", "equal"]:
+    #     return response(error=Error.CASE_ASSERT_ERROR)
 
     if assert_type == "include":
         if assert_text in resp:
@@ -78,13 +78,14 @@ def assert_case(request, data: CaseAssertIn):
     return response()
 
 #用例更新接口
-@router.put("/{case_id}/", auth=None)
+@router.post("/{case_id}/", auth=None)
 def update_case(request, case_id: int,  payload: CaseIn):
     """
     更新用例
     auth=None 该接口不需要认证
     """
     case = get_object_or_404(TestCase, id=case_id)
+    print(payload.dict().items())
     for attr, value in payload.dict().items():
         setattr(case, attr, value)
     case.save()
@@ -92,7 +93,7 @@ def update_case(request, case_id: int,  payload: CaseIn):
     return response()
 
 #删除用例接口
-@router.delete("/{case_id}/", auth=None)
+@router.post("/{case_id}/", auth=None)
 def delete_case(request, case_id: int):
     """
     删除用例
@@ -116,18 +117,11 @@ def case_detail(request, case_id: int):
         return response(error=Error.CASE_DELETE_ERROR)
     data = {
                 "id": case.id,
-                "name": case.name, "url": case.url,
+                "name": case.name,
+                "url": case.url,
                 "method": case.method,
                 "create_time": case.create_time
                 }
     return response(result=data)
 
-#获取用例列表接口
-# @router.get("/list",auth=None,response=List[CaseOut])  #自定义分页必须加response
-# @paginate(CustomPagination)
-# def project_list(request,data:ModuleSchema=Query(...)):
-#     case = TestCase.objects.filter(is_delete=False,module_id=data.id).all()
-#     data = []
-#     for i in TestCase:
-#         data.append(model_to_dict(i))
-#     return data
+

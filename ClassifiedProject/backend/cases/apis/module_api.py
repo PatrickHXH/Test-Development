@@ -2,8 +2,12 @@ from ninja import Router, Query
 from django.forms.models import model_to_dict
 from backend.common import response,Error
 from  cases.models import Module
-from cases.apis.api_schema import ModuleIn,ProjectIn
+from cases.apis.api_schema import ModuleIn,ProjectIn,CaseOut
 from django.shortcuts import get_object_or_404
+from typing import List  #分页用到的列表
+from backend.pagination import CustomPagination   #自定义分页
+from ninja.pagination import paginate,PageNumberPagination  #分页
+from  cases.models import TestCase
 
 router = Router(tags=["modules"])
 
@@ -68,6 +72,25 @@ def delete_tree(request,module_id:int):
     module.save()
     return response()
 
+# #获取用例列表接口1，分页
+# @router.get("/{module_id}/cases",auth=None,response=List[CaseOut])  #自定义分页必须加response
+# @paginate(CustomPagination)
+# def case_list(request,module_id: int,**kwargs):
+#     # cases = TestCase.objects.filter(module_id=module_id, is_delete=False)
+#     # data = []
+#     # for i in cases:
+#     #     data.append(model_to_dict(i))
+#     # print(data)
+#     # return data
+#     return TestCase.objects.filter(module_id=module_id, is_delete=False).all()
 
 
 
+@router.get("/{module_id}/cases", auth=None, response=List[CaseOut])
+@paginate(CustomPagination)
+def case_list(request, module_id: int, **kwargs):
+    """
+    获取模块下面的用例列表
+    auth=None 该接口不需要认证
+    """
+    return TestCase.objects.filter(module_id=module_id, is_delete=False).all()
