@@ -15,8 +15,6 @@ class Method(str, Enum):
     """请求方法"""
     get = "get"
     post = "post"
-    put = "put"
-    delete = "delete"
 
 
 class ParamsType(str, Enum):
@@ -69,6 +67,6 @@ class CaseOut(Schema):
     module_id: int
     url: str
     method: str
-    # module: ModuleSchema = None  # 关联模块
+    module: ModuleSchema = None  # 关联外键表模块
     create_time: Any
     update_time: Any

@@ -13,7 +13,7 @@ from typing import List  #分页用到的列表
 
 router = Router(tags=["cases"])
 
-#创建模块接口
+#创建用例接口
 @router.post("/",auth=None)
 def create_case(request,data:CaseIn):
     module = Module.objects.filter(id=data.module_id)
@@ -78,7 +78,7 @@ def assert_case(request, data: CaseAssertIn):
     return response()
 
 #用例更新接口
-@router.post("/{case_id}/", auth=None)
+@router.post("/update/{case_id}", auth=None)
 def update_case(request, case_id: int,  payload: CaseIn):
     """
     更新用例
@@ -93,7 +93,7 @@ def update_case(request, case_id: int,  payload: CaseIn):
     return response()
 
 #删除用例接口
-@router.post("/{case_id}/", auth=None)
+@router.post("/delete/{case_id}", auth=None)
 def delete_case(request, case_id: int):
     """
     删除用例

@@ -26,7 +26,7 @@ class CustomPagination(PaginationBase):
         page: int
         size: int
 
-    def paginate_queryset(self, queryset: list, pagination: Input,**params):
+    def paginate_queryset(self, queryset: list, pagination: Input,**kwargs):
         page: int = pagination.page
         size: int = pagination.size
         offset = (page - 1) * size
