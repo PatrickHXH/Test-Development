@@ -21,6 +21,9 @@ class Error:
     CASE_ASSERT_ERROR = {"10054":"请求参数类型错误"}
     CASE_DELETE_ERROR = {"10055":"用例已删除"}
 
+    TASK_DELETE_ERROR = {"10055": "任务已删除"}
+
+
 def response(success:bool = True, error = None, result=[]):
     if error is None:
         error_code = ""

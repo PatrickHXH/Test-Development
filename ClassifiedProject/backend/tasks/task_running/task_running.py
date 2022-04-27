@@ -1,47 +1,17 @@
-import hashlib
 import json
-from ninja import Router,File
-from django.forms.models import model_to_dict
-from backend.common import response,Error
-from backend.pagination import CustomPagination
-from ninja.pagination import paginate,PageNumberPagination  #分页
-from typing import List
-from tasks.api_schema import TaskIn
-from projects.models import Project
 from cases.models import TestCase
-from tasks.models import TestTask,TaskCaseRelevance,TestResult
-from django.shortcuts import get_object_or_404
+from tasks.models import TestTask,TaskCaseRelevance
 import os
 from backend.settings import BASE_DIR
 from tasks.task_running.test_result import save_test_result
+import threading
 
 data_dir = os.path.join(BASE_DIR,'tasks','task_running','test_data.json')
 test_dir = os.path.join(BASE_DIR,'tasks','task_running','test_case.py')
-router = Router(tags=["tasks"])
 
-@router.post("/",auth=None)
-def create_task(request,data:TaskIn):
-    '''
-    创建任务
-    '''
-    project = get_object_or_404(Project,id=data.projcet)
-    task = TestTask.objects.create(project_id=project.id,name=data.name,describe=data.describe)
-    cases = []
-    for case in data.case:
-        TaskCaseRelevance.objects.create(task_id=task.id,case_id=case)
-        case = TestCase.objects.get(id=case)
-        cases.append({"case":case.id,"module":case.module_id})
-    task_dict = model_to_dict(task)
-    task_dict["cases"] = cases
-    return response(result=task_dict)
 
-@router.post("/{task_id}/running",auth=None)
-def start_task(request,task_id: int):
-    '''
-    执行任务
-    '''
-    task = get_object_or_404(TestTask,pk=task_id)
-    Relevance = TaskCaseRelevance.objects.filter(task_id=task.id)
+def run_task(task_id):
+    Relevance = TaskCaseRelevance.objects.filter(task_id=task_id)
     list = []
     data = {}
     for rel in Relevance:
@@ -71,5 +41,24 @@ def start_task(request,task_id: int):
     print("2.执行测试用例")
     os.system(f"python {test_dir}")
     #保存测试结果
+    print("3.保存测试结果")
     save_test_result(task_id)
-    return response()
+    task = TestTask.objects.get(id=task_id)
+    task.status = 2
+    task.save()
+
+def run1(task_id):
+    threads = []
+    t = threading.Thread(target=run_task,args=(task_id,))
+    threads.append(t)
+    for i in threads:
+        i.start()
+    for i in threads:
+        i.join()
+
+def run2(task_id):
+    threads = []
+    t = threading.Thread(target=run1,args=(task_id,))
+    threads.append(t)
+    for i in threads:
+        i.start()
