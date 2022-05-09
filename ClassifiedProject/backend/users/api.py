@@ -43,7 +43,7 @@ def user_login(request,data:LoginIn):
                 "username": user.username,
                 "session":session.session_key
             }
-            return  response(user_info)
+            return  response(result=user_info)
         else:
             return response(error=Error.USER_OR_PAWD_EROOR)
 

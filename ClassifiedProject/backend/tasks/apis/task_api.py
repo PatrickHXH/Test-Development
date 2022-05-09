@@ -60,6 +60,9 @@ def get_task(request,task_id:int):
 
 @router.post("/update/{task_id}", auth=None)
 def update_case(request, task_id: int,  data: TaskIn):
+    '''
+    更新任务
+    '''
     task = get_object_or_404(TestTask,id=task_id)
     task.name = data.name
     task.describe = data.describe

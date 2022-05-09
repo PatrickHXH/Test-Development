@@ -45,7 +45,7 @@ def on_invalid_session(request, exc):
 @api.exception_handler(OverdueSession)
 def on_overdue_session(request, exc):
     """过期session返回类型 """
-    return api.create_response(request, {"detail": "Overdue session supplied"}, status=401)
+    return api.create_response(request, {"detail": "Overdue session supplied"}, status=402)
 
 api.add_router("/users/", users_router)
 api.add_router("/projects/", projects_router)
