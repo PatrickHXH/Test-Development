@@ -41,11 +41,17 @@
               <el-input v-model="registerForm.username"></el-input>
             </el-form-item>
             <el-form-item label="设置密码" prop="password">
-              <el-input v-model="registerForm.password" type="password"></el-input>
+              <el-input
+                v-model="registerForm.password"
+                type="password"
+              ></el-input>
             </el-form-item>
             <el-form-item label="确认密码" prop="confirm_password">
-              <el-input v-model="registerForm.confirm_password" type="password"></el-input>
-            </el-form-item>            
+              <el-input
+                v-model="registerForm.confirm_password"
+                type="password"
+              ></el-input>
+            </el-form-item>
             <el-form-item size="large">
               <el-button
                 type="primary"
@@ -54,7 +60,7 @@
                 >登录</el-button
               >
             </el-form-item>
-          </el-form>          
+          </el-form>
         </el-tab-pane>
       </el-tabs>
     </el-card>
@@ -84,9 +90,13 @@ export default {
         confirm_password: "",
       },
       rules: {
-        username: [{ required: true, message: "请输入用户名", trigger: "blur" },],
+        username: [
+          { required: true, message: "请输入用户名", trigger: "blur" },
+        ],
         password: [{ required: true, message: "请输入密码", trigger: "blur" }],
-        confirm_password: [{ required: true, message: "请输入确认密码", trigger: "blur" },],
+        confirm_password: [
+          { required: true, message: "请输入确认密码", trigger: "blur" },
+        ],
       },
     };
   },
