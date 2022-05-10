@@ -1,4 +1,4 @@
-# vue_test
+# vuetest
 
 ## Project setup
 ```

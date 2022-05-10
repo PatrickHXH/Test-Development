@@ -72,6 +72,7 @@
 // import HelloWorld from "@/components/HelloWorld.vue";
 
 import UserApi from "../requests/user.js";
+
 export default {
   name: "HomeView",
   components: {
@@ -145,7 +146,6 @@ export default {
   },
 };
 </script>
-
 #卡片样式
 <style>
 .text {

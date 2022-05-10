@@ -2,9 +2,9 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import Login from "../views/Login.vue";
+import Navigation from "../views/Navigation.vue";
 
 Vue.use(VueRouter);
-
 const routes = [
   {
     path: "/",
@@ -12,22 +12,28 @@ const routes = [
   },
   {
     path: "/login",
-    name: "login",
+    name: "Login",
     component: Login,
   },
   {
-    path: "/home",
-    name: "Home",
-    component: HomeView,
-  },
-  {
-    path: "/about",
-    name: "AboutView",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+    path: "/main",
+    name: "Navigation",
+    component: Navigation,
+    children: [
+      {
+        path: "home",
+        component: HomeView,
+      },
+      {
+        path: "about",
+        name: "About",
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () =>
+          import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+      },
+    ],
   },
 ];
 
@@ -44,7 +50,7 @@ router.beforeEach((to, from, next) => {
     next();
   } else {
     // 否则就需要判断
-    if (sessionStorage.token) {
+    if (sessionStorage.session) {
       // 如果有用户名就进行下一步操作
       next();
     } else {
