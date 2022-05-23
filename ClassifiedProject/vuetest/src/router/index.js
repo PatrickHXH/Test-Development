@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import HomeView from "../views/HomeView.vue";
+import projectList from "../components/project/projectList.vue";
 import Login from "../views/Login.vue";
 import Navigation from "../views/Navigation.vue";
 
@@ -21,8 +21,8 @@ const routes = [
     component: Navigation,
     children: [
       {
-        path: "home",
-        component: HomeView,
+        path: "project",
+        component: projectList,
       },
       {
         path: "about",

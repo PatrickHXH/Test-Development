@@ -12,6 +12,7 @@ from django.db.models import QuerySet
 from django.shortcuts import get_object_or_404
 from ninja.files import UploadedFile
 import os
+from  backend.settings import IMAGE_DIR
 router = Router(tags=["projects"])
 
 #创建项目接口
@@ -92,9 +93,11 @@ def upload(request, file: UploadedFile = File(...)):
         #文件名生成MD5
         file_md5 = hashlib.md5(bytes(file.name,encoding="utf-8")).hexdigest()
         file_name = file_md5+"."+type
-        file_dir = os.path.dirname(os.path.abspath(__file__))
-        upload_file= os.path.join(file_dir,"..\\resources\\img",file.name)
-        with open(upload_file,"wb") as f:
+        # file_dir = os.path.dirname(os.path.abspath(__file__))
+        print("重命名图片：",file_name)
+        upload_file= os.path.join(IMAGE_DIR,file_name)
+        print(upload_file)
+        with open(upload_file,"wb+") as f:
             for chunk in file.chunks():   #file.chunks()类似与file.read()
                 f.write(chunk)
         return response(result={"name":file_name})

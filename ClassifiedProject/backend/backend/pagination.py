@@ -16,8 +16,8 @@ class CustomPagination(PaginationBase):
     自定义分页器
     """
     class Input(Schema):
-        page: int = Field(1, gt=0)
-        size: int
+        page: int = Field(1)
+        size: int = Field(6, gt=0)
 
     class Output(Schema):
         success: bool = True
