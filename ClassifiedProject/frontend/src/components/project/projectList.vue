@@ -1,10 +1,10 @@
 <template>
-  <div class="home">
-    <el-card class="box-card" style="width: 100%">
-      <div style="height: 50px; width: 100%; text-align: left">
-        <el-button type="primary" @click="showDialog">创建</el-button>
-      </div>
-      <div v-for="(item, index) in projectData" :key="index" class="text item">
+  <div class="project">
+    <div style="height: 50px; width: 100%; text-align: left">
+      <el-button type="primary" @click="showDialog">创建</el-button>
+    </div>
+    <div style="height: 700px">
+      <div v-for="(item, index) in projectData" :key="index">
         <el-col :span="7" class="project-card" style="width: 29%; margin: 2%">
           <el-card>
             <div slot="header" class="clearfix">
@@ -29,30 +29,33 @@
             </div>
             {{ item.address }}
             <img
-              style="width: 100%"
-              src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+              style="width: 60%; height: 250px"
+              :src="item.image"
               class="image"
             />
           </el-card>
         </el-col>
       </div>
-    </el-card>
-    <el-pagination
-      background
-      :page-size="6"
-      @current-change="handleCurrentChange"
-      :total="total"
-      style="margin: 10px"
-    >
-    </el-pagination>
-
-    <!-- 引入子组件 -->
-    <projectDialog
-      v-if="show"
-      @cancel="closeDialog"
-      :title="dialogTitle"
-      :pid="currentPorjectId"
-    ></projectDialog>
+    </div>
+    <div style="height: 50%; float: center">
+      <el-pagination
+        background
+        :page-size="6"
+        @current-change="handleCurrentChange"
+        :total="total"
+        style="margin: 10px"
+      >
+      </el-pagination>
+    </div>
+    <div>
+      <!-- 引入子组件 -->
+      <projectDialog
+        v-if="show"
+        @cancel="closeDialog"
+        :title="dialogTitle"
+        :pid="currentPorjectId"
+      ></projectDialog>
+    </div>
   </div>
 </template>
 
@@ -73,7 +76,7 @@ export default {
         page: 1,
         size: 6,
       },
-      total: "",
+      total: 0,
     };
   },
   created() {
@@ -87,9 +90,13 @@ export default {
       const resp = await ProjectApi.getproject(this.req);
       console.log(resp);
       if (resp.success === true) {
+        // 处理图片路径
+        for (let i = 0; i < resp.items.length; i++) {
+          resp.items[i].image = "/static/images/" + resp.items[i].image;
+        }
         this.projectData = resp.items;
         this.total = resp.total;
-        this.$message.success("查询成功");
+        // this.$message.success("查询成功");
       } else {
         this.$message.error("查询失败!");
       }
@@ -115,7 +122,7 @@ export default {
       this.dialogTitle = "edite";
       this.show = true;
     },
-    //获取项目列表
+    //删除项目
     async deleteProject(id) {
       console.log("删除项目");
       const resp = await ProjectApi.deleteproject(id);

@@ -20,10 +20,10 @@
               <template #title> 项目管理</template>
             </el-menu-item>
           </router-link>
-          <router-link to="/main/about">
-            <el-menu-item index="1" class="menu-option">
-              <i class="el-icon-s-home"></i>
-              <template #title> 测试平台</template>
+          <router-link to="/main/case">
+            <el-menu-item index="2" class="menu-option">
+              <i class="el-icon-bicycle"></i>
+              <template #title> 用例管理</template>
             </el-menu-item>
           </router-link>
         </el-menu>
@@ -43,8 +43,9 @@
         </el-header>
 
         <el-main>
-          <!-- <h1>渲染home</h1> -->
-          <router-view> </router-view>
+          <el-card style="width: 100%">
+            <router-view> </router-view>
+          </el-card>
         </el-main>
       </el-container>
     </el-container>

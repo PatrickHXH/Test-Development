@@ -2,6 +2,7 @@ from ninja import Router, Query
 from django.forms.models import model_to_dict
 from backend.common import response,Error
 from  cases.models import Module
+from projects.models import Project
 from cases.apis.api_schema import ModuleIn,ProjectIn,CaseOut
 from django.shortcuts import get_object_or_404
 from typing import List  #分页用到的列表
@@ -48,7 +49,7 @@ def project_module_tree(request,data:ProjectIn=Query(...)):
     list = []
     for i in modules:
         list.append({"id": i.id,
-                            "name":i.name,
+                            "label":i.name,
                             "parent_id":i.parent_id,
                             "children":[],
                             "create_time":i.create_time

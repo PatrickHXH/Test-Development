@@ -25,9 +25,10 @@ def create_project(request,data:ProjectIn):
     project = Project.objects.filter(name=name)
     if len(project) > 0:
         return  response(error=Error.PROJECT_NAME_EXIST)
-    else:
-        Project.objects.create(**data.dict())
-        return  response()
+    if data.image == "":
+        data.image = "default_project_image.png"
+    Project.objects.create(**data.dict())
+    return  response()
 
 #项目列表接口
 @router.get("/list",auth=None,response=List[ProjectOut])  #自定义分页必须加response

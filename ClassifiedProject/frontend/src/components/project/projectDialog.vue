@@ -22,13 +22,18 @@
         <el-form-item label="图片:" prop="desc">
           <div id="image">
             <el-upload
-              list-type="picture-card"
               action="#"
+              list-type="picture-card"
               :before-upload="beforeUpload"
+              :on-remove="handleRemove"
+              :on-preview="handlePreview"
               :file-list="fileList"
             >
               <i class="el-icon-plus"></i>
             </el-upload>
+            <el-dialog :visible.sync="imageVisible">
+              <img width="100%" :src="imageUrl" alt="" />
+            </el-dialog>
           </div>
         </el-form-item>
         <el-form-item>
@@ -56,23 +61,17 @@ export default {
       projectForm: {
         name: "",
         describe: "",
-        image: "xxx.jpg",
+        image: "",
       },
       rules: {
-        name: [
-          { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" },
-        ],
+        name: [{ required: true, message: "请填写项目名称", trigger: "blur" }],
         describe: [
           { required: true, message: "请填写项目描述", trigger: "blur" },
         ],
       },
-      fileList: [
-        {
-          name: "food.jpeg",
-          url: "http://127.0.0.1:8000/static/images/1abb2dc3d76311944ffdbe9980fbaadd.jpg",
-        },
-      ],
+      fileList: [],
       imageUrl: "",
+      imageVisible: false,
     };
   },
   mounted() {
@@ -84,15 +83,19 @@ export default {
     }
   },
   methods: {
-    //调用子组件 关闭弹窗ffdd
+    //调用子组件 关闭弹窗
     closeDialog() {
       console.log("closeDialog");
       this.$emit("cancel", {});
     },
-    // 获取项目列表
+    // 获取项目详情
     async initProjectList() {
       console.log("获取项目列表");
       const resp = await ProjectApi.getoneproject(this.pid);
+      this.fileList.push({
+        name: resp.result.name,
+        url: "/static/images/" + resp.result.image,
+      });
       console.log(resp);
       if (resp.success === true) {
         this.projectForm = resp.result;
@@ -131,14 +134,37 @@ export default {
         }
       });
     },
+    // 上传图片
     beforeUpload(file) {
       console.log("上传文件对象", file);
       let fd = new FormData();
       fd.append("file", file);
-
+      this.fileList = [];
       ProjectApi.updateImage(fd).then((resp) => {
-        console.log("resp", resp.data);
+        if (resp.data.success === true) {
+          console.log("resp", resp.data);
+          this.projectForm.image = resp.data.result.name;
+          const imagePath = "/static/images/" + resp.data.result.name;
+          this.fileList.push({
+            name: file.name,
+            url: imagePath,
+          });
+          console.log("图片路径：", imagePath);
+          this.$message.success("上传成功！");
+        } else {
+          this.$message.success("上传失败！");
+        }
       });
+    },
+    // 预览图片
+    handlePreview(file) {
+      console.log("上传成功", file);
+      this.imageUrl = file.url;
+      this.imageVisible = true;
+    },
+    // 删除图片
+    handleRemove(file) {
+      console.log("删除", file);
     },
   },
 };
