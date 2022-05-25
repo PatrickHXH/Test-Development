@@ -7,6 +7,9 @@ class ModuleApi {
   createmodule(data) {
     return request.post("/api/modules/create/", data);
   }
+  deletemodule(id) {
+    return request.delete("/api/modules/delete/" + id);
+  }
 }
 
 export default new ModuleApi();

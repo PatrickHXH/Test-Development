@@ -68,6 +68,7 @@
         :plabel="projectlabel"
         :parid="parent_id"
         :parname="parentname"
+        :moduleid="moduleid"
       ></moduleDialog>
     </div>
   </div>
@@ -99,6 +100,7 @@ export default {
       total: "",
       parent_id: 1,
       parentname: "",
+      moduleid: 1,
     };
   },
   mounted() {
@@ -165,6 +167,9 @@ export default {
     // 删除模块节点node, data
     remove(node, data) {
       console.log("删除节点", node, data);
+      this.moduleid = data.id;
+      this.rootFlag = 3;
+      this.show = true;
     },
     //关闭弹窗
     closeDialog() {

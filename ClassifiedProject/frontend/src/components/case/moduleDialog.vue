@@ -10,22 +10,31 @@
         :model="moduleForm"
         :rules="rules"
         ref="moduleForm"
-        label-width="100px"
+        label-width="80px"
         class="demo-ruleForm"
       >
-        <el-form-item label="项目" prop="name">
+        <el-form-item label="项目" prop="name" v-if="showprojectname">
           <el-input :value="plabel" disabled></el-input>
         </el-form-item>
         <el-form-item label="根节点" prop="name" v-if="showrootname">
           <el-input :value="parname" disabled></el-input>
         </el-form-item>
-        <el-form-item label="名称" prop="name">
+        <el-form-item label="名称" prop="name" v-if="showcurrentrootname">
           <el-input v-model="moduleForm.name"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button @click="closeDialog">关闭</el-button>
-          <el-button type="primary" @click="submitModule('moduleForm')"
+          <el-button
+            type="primary"
+            @click="submitModule('moduleForm')"
+            v-if="showcreatebutton"
             >创建</el-button
+          >
+          <el-button
+            type="primary"
+            @click="submitModule('moduleForm')"
+            v-if="showdeletebutton"
+            >删除</el-button
           >
         </el-form-item>
       </el-form>
@@ -37,12 +46,16 @@
 import ModuleApi from "../../requests/module.js";
 
 export default {
-  props: ["rootID", "pid", "plabel", "parid", "parname"],
+  props: ["rootID", "pid", "plabel", "parid", "parname", "moduleid"],
   components: {},
   data() {
     return {
       showTitle: "",
       showrootname: false,
+      showprojectname: true,
+      showcurrentrootname: true,
+      showcreatebutton: true,
+      showdeletebutton: false,
       dialogVisible: true,
       moduleForm: {
         name: "",
@@ -61,6 +74,13 @@ export default {
     } else if (this.rootID == 2) {
       this.showTitle = "创建子节点";
       this.showrootname = true;
+    } else if (this.rootID == 3) {
+      this.showTitle = "删除节点";
+      this.showrootname = false;
+      this.showprojectname = false;
+      this.showcurrentrootname = false;
+      this.showcreatebutton = false;
+      this.showdeletebutton = true;
     }
   },
   methods: {
@@ -90,6 +110,16 @@ export default {
                 console.log("创建成功");
                 this.closeDialog();
                 this.$message.success("创建成功！");
+              } else {
+                this.$message.error(resp.error.message);
+              }
+            });
+          } else if (this.rootID == 3) {
+            console.log("节点id", this.moduleid);
+            ModuleApi.deletemodule(this.moduleid).then((resp) => {
+              if (resp.success === true) {
+                this.closeDialog();
+                this.$message.success("删除成功");
               } else {
                 this.$message.error(resp.error.message);
               }
