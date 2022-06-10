@@ -20,6 +20,7 @@ class Error:
     CASE_PARAMS_ERROR = {"10053":"请求参数类型错误"}
     CASE_ASSERT_ERROR = {"10054":"请求参数类型错误"}
     CASE_DELETE_ERROR = {"10055":"用例已删除"}
+    CASE_URL_ERROR = {"10056": "URL不能为空"}
 
     TASK_DELETE_ERROR = {"10055": "任务已删除"}
 

@@ -34,16 +34,16 @@
           <el-dropdown>
             <i class="el-icon-setting" style="margin-right: 15px"></i>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>查看</el-dropdown-item>
-              <el-dropdown-item>新增</el-dropdown-item>
-              <el-dropdown-item>删除</el-dropdown-item>
+              <el-dropdown-item>
+                <el-button type="text" @click="logout">退出</el-button>
+              </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
           <span>欢迎,{{ user }}</span>
         </el-header>
 
         <el-main>
-          <el-card style="width: 100%">
+          <el-card style="width: 100%; height: 100%">
             <router-view> </router-view>
           </el-card>
         </el-main>
@@ -73,6 +73,16 @@ export default {
   },
   created() {
     this.user = sessionStorage.getItem("user");
+  },
+  methods: {
+    logout() {
+      console.log("退出登录");
+      sessionStorage.session = "";
+      sessionStorage.user = "";
+      this.$router.push({
+        path: "/login",
+      });
+    },
   },
 };
 </script>

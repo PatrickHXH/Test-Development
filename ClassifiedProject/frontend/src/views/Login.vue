@@ -120,7 +120,7 @@ export default {
             if (resp.success === true) {
               sessionStorage.session = resp.result.session;
               sessionStorage.user = resp.result.username;
-              this.$router.push({ path: "/main" });
+              this.$router.push({ path: "/main/project" });
               this.$message.success("登录成功！");
             } else {
               this.$message.error("登录失败！");

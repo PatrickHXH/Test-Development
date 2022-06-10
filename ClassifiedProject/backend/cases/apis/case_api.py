@@ -9,7 +9,7 @@ import requests
 from backend.pagination import CustomPagination   #自定义分页
 from ninja.pagination import paginate,PageNumberPagination  #分页
 from typing import List  #分页用到的列表
-
+import json
 
 router = Router(tags=["cases"])
 
@@ -32,13 +32,15 @@ def debug_case(request,data:CaseDebugIn):
     params_type = data.params_type
     params_body = data.params_body
 
+    print(type(header),header)
+    print(type(params_body), params_body)
     # if method not in  ["get","post"]:
     #     return response(error=Error.CASE_METHOD_ERROR)
-    # if params_type not in ["params","form","json"]:
-    #     return response(error=Error.CASE_PARAMS_ERROR)
+    if url == None or url == "":
+        return response(error=Error.CASE_URL_ERROR)
 
     if method == "get":
-        resp = requests.get(url,params=params_body)
+        resp = requests.get(url,params=params_body,headers=header)
     if method == "post":
         if params_type == "json":
             resp = requests.post(url,json=params_body,headers=header)
@@ -120,7 +122,15 @@ def case_detail(request, case_id: int):
                 "name": case.name,
                 "url": case.url,
                 "method": case.method,
-                "create_time": case.create_time
+                "header":case.header,
+                "params_type":case.params_type ,
+                "params_body": case.params_body,
+                "response": case.response,
+                "assert_type": case.assert_type ,
+                "assert_text":case.assert_text,
+                "is_delete": case.is_delete,
+                 "create_time": case.create_time,
+                "update_time": case.update_time
                 }
     return response(result=data)
 

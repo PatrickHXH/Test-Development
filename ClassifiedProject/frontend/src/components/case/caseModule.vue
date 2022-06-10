@@ -1,12 +1,13 @@
 <template>
-  <div class="caseModeule" style="height: 100%; float: left">
-    <div style="margin-bottom: 10px">
+  <div class="caseModeule" style="height: 100%">
+    <!-- 选择项目，创建用例按钮 -->
+    <div style="margin-bottom: 10px; text-align: left; width: 100%">
       <span>
         <b>项目：</b>
       </span>
       <span>
         <el-select
-          v-model="projectvalue"
+          v-model="methodOptions"
           placeholder="请选择项目"
           @change="changeproject"
         >
@@ -28,9 +29,15 @@
           </el-pagination>
         </el-select>
       </span>
+      <span>
+        <el-button @click="CreateCase" type="primary" style="margin-left: 16px">
+          创建
+        </el-button>
+      </span>
     </div>
-    <div>
-      <el-card style="width: 100%">
+    <!-- 添加删除节点 -->
+    <div style="width: 20%; float: left">
+      <el-card>
         <el-button
           type="text"
           class="el-icon-circle-plus-outline"
@@ -43,6 +50,7 @@
           node-key="id"
           default-expand-all
           :expand-on-click-node="false"
+          @node-click="NodeClick"
         >
           <span class="custom-tree-node" slot-scope="{ node, data }">
             <span>{{ node.label }}</span>
@@ -58,8 +66,35 @@
         </el-tree>
       </el-card>
     </div>
+    <!-- 查看用例表格 -->
+    <div style="width: 77%; height: 100%; float: right">
+      <el-table
+        :data="caseData"
+        style="width: 100%"
+        border
+        @row-click="caseRowclick"
+      >
+        <el-table-column prop="id" label="ID" width="50"> </el-table-column>
+        <el-table-column prop="name" label="姓名" width="180">
+        </el-table-column>
+        <el-table-column prop="method" label="请求方法" width="80">
+        </el-table-column>
+        <el-table-column prop="url" label="URL" width="180"> </el-table-column>
+        <el-table-column prop="create_time" label="创建时间"> </el-table-column>
+      </el-table>
+      <div>
+        <el-pagination
+          background
+          :page-size="6"
+          @current-change="handleCurrentcaseChange"
+          :total="casetotal"
+          style="margin-top: 10px"
+        >
+        </el-pagination>
+      </div>
+    </div>
+    <!-- 引入创建模块弹窗 -->
     <div>
-      <!-- 引入子组件 -->
       <moduleDialog
         v-if="show"
         @cancel="closeDialog"
@@ -71,6 +106,23 @@
         :moduleid="moduleid"
       ></moduleDialog>
     </div>
+    <!-- 引入创建用例弹窗 -->
+    <div>
+      <el-drawer
+        :title="CaseTitle"
+        :visible.sync="drawer"
+        :direction="direction"
+        size="50%"
+      >
+        <caseDialog
+          v-if="drawer"
+          :caseFlag="caseFlag"
+          :caseid="caseid"
+          :moduleid="moduleid"
+          @cancel="closecasedialog"
+        ></caseDialog>
+      </el-drawer>
+    </div>
   </div>
 </template>
 
@@ -78,11 +130,14 @@
 import ProjectApi from "../../requests/project.js";
 import ModuleApi from "../../requests/module.js";
 import moduleDialog from "@/components/case/moduleDialog";
+import caseDialog from "@/components/case/caseDialog";
+
 // let id = 1000;
 
 export default {
   components: {
     moduleDialog,
+    caseDialog,
   },
   data() {
     const ModuleData = [];
@@ -97,16 +152,32 @@ export default {
         page: 1,
         size: 6,
       },
-      total: "",
+      total: 0,
+      casetotal: 0,
       parent_id: 1,
       parentname: "",
       moduleid: 1,
+      caseData: [],
+      drawer: false,
+      direction: "ltr",
+      CaseTitle: "",
+      methodOptions: [
+        {
+          value: "get",
+          label: "GET",
+        },
+        {
+          value: "post",
+          label: "POST",
+        },
+      ],
+      caseFlag: 1,
+      caseid: 1,
     };
   },
   mounted() {
     console.log("打印");
     this.initProjectList();
-    this.initModuleList(1);
   },
   methods: {
     //初始化获取项目列表
@@ -129,7 +200,13 @@ export default {
         this.$message.error("查询失败!");
       }
     },
-    // 跳到第几页
+    // 用例跳到第几页
+    handleCurrentcaseChange(val) {
+      console.log(`当前页: ${val}`);
+      this.req.page = val;
+      this.initCaseList(this.moduleid);
+    },
+    // 项目跳到第几页
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.req.page = val;
@@ -185,6 +262,41 @@ export default {
     createChildernModule() {
       this.show = true;
       this.rootFlag = 2;
+    },
+    // 点击模块节点
+    NodeClick(data) {
+      console.log("点击节点", data);
+      this.initCaseList(data.id);
+    },
+    //获取用例树
+    async initCaseList(mid) {
+      const resp = await ModuleApi.getcaselist(mid, this.req);
+      if (resp.success === true) {
+        this.caseData = resp.items;
+        this.casetotal = resp.total;
+        this.$message.success("查询成功");
+      } else {
+        this.$message.error("查询失败!");
+      }
+    },
+    //创建用例弹窗
+    CreateCase() {
+      this.drawer = true;
+      this.CaseTitle = "创建用例";
+      this.caseFlag = 1;
+    },
+    //编辑查看用例弹窗
+    caseRowclick(data) {
+      this.drawer = true;
+      this.caseFlag = 2;
+      this.CaseTitle = "查看用例";
+      this.caseid = data.id;
+      // console.log("点击用例节点", data);
+    },
+    //关闭用例弹窗
+    closecasedialog() {
+      console.log("关闭用例弹窗");
+      this.drawer = false;
     },
   },
 };

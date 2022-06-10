@@ -63,6 +63,7 @@ class ModuleSchema(Schema):
     name: str
 
 class CaseOut(Schema):
+    id:int
     name: str
     module_id: int
     url: str

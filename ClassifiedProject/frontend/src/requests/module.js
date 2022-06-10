@@ -8,7 +8,10 @@ class ModuleApi {
     return request.post("/api/modules/create/", data);
   }
   deletemodule(id) {
-    return request.delete("/api/modules/delete/" + id);
+    return request.get("/api/modules/delete/" + id);
+  }
+  getcaselist(id, data) {
+    return request.get("/api/modules/" + id + "/cases", data);
   }
 }
 

@@ -66,7 +66,7 @@ def project_module_tree(request,data:ProjectIn=Query(...)):
     return response(result=data)
 
 #删除节点接口
-@router.delete("/delete/{module_id}",auth=None)
+@router.get("/delete/{module_id}",auth=None)
 def delete_tree(request,module_id:int):
     module = get_object_or_404(Module, id=module_id)
     module.is_delete = True
