@@ -107,7 +107,7 @@ export default {
       this.req.page = val;
       this.initProjectList();
     },
-    //展示关闭弹窗
+    //展示和关闭弹窗
     showDialog() {
       this.dialogTitle = "create";
       this.show = true;

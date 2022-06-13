@@ -68,12 +68,7 @@
     </div>
     <!-- 查看用例表格 -->
     <div style="width: 77%; height: 100%; float: right">
-      <el-table
-        :data="caseData"
-        style="width: 100%"
-        border
-        @row-click="caseRowclick"
-      >
+      <el-table :data="caseData" style="width: 90%" border>
         <el-table-column prop="id" label="ID" width="50"> </el-table-column>
         <el-table-column prop="name" label="姓名" width="180">
         </el-table-column>
@@ -81,6 +76,16 @@
         </el-table-column>
         <el-table-column prop="url" label="URL" width="180"> </el-table-column>
         <el-table-column prop="create_time" label="创建时间"> </el-table-column>
+        <el-table-column fixed="right" label="操作" width="100">
+          <template slot-scope="scope">
+            <el-button @click="caseRowclick(scope.row)" type="text" size="small"
+              >查看</el-button
+            >
+            <el-button type="text" size="small" @click="deleteCase(scope.row)"
+              >删除</el-button
+            >
+          </template>
+        </el-table-column>
       </el-table>
       <div>
         <el-pagination
@@ -118,8 +123,9 @@
           v-if="drawer"
           :caseFlag="caseFlag"
           :caseid="caseid"
-          :moduleid="moduleid"
+          :currentModule="currentModule"
           @cancel="closecasedialog"
+          @fresh="initCaseList(currentModule)"
         ></caseDialog>
       </el-drawer>
     </div>
@@ -130,6 +136,7 @@
 import ProjectApi from "../../requests/project.js";
 import ModuleApi from "../../requests/module.js";
 import moduleDialog from "@/components/case/moduleDialog";
+import CaseApi from "../../requests/case.js";
 import caseDialog from "@/components/case/caseDialog";
 
 // let id = 1000;
@@ -173,6 +180,7 @@ export default {
       ],
       caseFlag: 1,
       caseid: 1,
+      currentModule: 0,
     };
   },
   mounted() {
@@ -238,6 +246,7 @@ export default {
     append(data) {
       console.log("创建子节点", data);
       this.createChildernModule();
+      this.moduleid = data.id;
       this.parent_id = data.id;
       this.parentname = data.label;
     },
@@ -266,6 +275,7 @@ export default {
     // 点击模块节点
     NodeClick(data) {
       console.log("点击节点", data);
+      this.currentModule = data.id;
       this.initCaseList(data.id);
     },
     //获取用例树
@@ -286,17 +296,29 @@ export default {
       this.caseFlag = 1;
     },
     //编辑查看用例弹窗
-    caseRowclick(data) {
+    caseRowclick(row) {
+      console.log("点击用例节点", row);
       this.drawer = true;
       this.caseFlag = 2;
       this.CaseTitle = "查看用例";
-      this.caseid = data.id;
+      this.caseid = row.id;
       // console.log("点击用例节点", data);
     },
     //关闭用例弹窗
     closecasedialog() {
       console.log("关闭用例弹窗");
       this.drawer = false;
+    },
+    //删除用例
+    async deleteCase(row) {
+      this.caseid = row.id;
+      const resp = await CaseApi.deleteCase(this.caseid);
+      if (resp.success === true) {
+        this.initCaseList(this.moduleid);
+        this.$message.success("删除成功");
+      } else {
+        this.$message.error("删除失败!");
+      }
     },
   },
 };

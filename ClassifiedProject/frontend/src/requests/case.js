@@ -13,6 +13,12 @@ class CaseApi {
   creatCase(data) {
     return request.post("/api/cases/", data);
   }
+  updateCase(id, data) {
+    return request.post("/api/cases/update/" + id, data);
+  }
+  deleteCase(id) {
+    return request.post("/api/cases/delete/" + id);
+  }
 }
 
 export default new CaseApi();

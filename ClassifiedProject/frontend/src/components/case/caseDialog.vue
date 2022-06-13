@@ -105,7 +105,7 @@ import vueJsonEditor from "vue-json-editor";
 import CaseApi from "../../requests/case.js";
 
 export default {
-  props: ["caseid", "caseFlag", "moduleid"],
+  props: ["caseid", "caseFlag", "moduleid", "currentModule"],
   components: {
     vueJsonEditor,
   },
@@ -183,39 +183,63 @@ export default {
     },
     //创建用例
     async createCase() {
-      console.log("创建用例");
-      const req = {
-        module_id: this.moduleid,
-        name: this.caseForm.name,
-        url: this.caseForm.url,
-        method: this.caseForm.method,
-        header: this.caseForm.header,
-        params_type: this.caseForm.params_type,
-        params_body: this.caseForm.params_body,
-        response: this.caseForm.response,
-        assert_type: this.caseForm.assert_type,
-        assert_text: this.caseForm.assert_text,
-      };
-      const resp = await CaseApi.creatCase(req);
-      if (resp.success === true) {
-        this.$message.success("创建成功");
-        this.closecasedialog();
+      if (this.caseFlag === 1) {
+        console.log("创建用例");
+        const req = {
+          module_id: this.currentModule,
+          name: this.caseForm.name,
+          url: this.caseForm.url,
+          method: this.caseForm.method,
+          header: this.caseForm.header,
+          params_type: this.caseForm.params_type,
+          params_body: this.caseForm.params_body,
+          response: this.caseForm.response,
+          assert_type: this.caseForm.assert_type,
+          assert_text: this.caseForm.assert_text,
+        };
+        const resp = await CaseApi.creatCase(req);
+        if (resp.success === true) {
+          this.$message.success("创建成功");
+          this.$emit("fresh", {});
+          this.closecasedialog();
+        } else {
+          this.$message.error("创建失败");
+        }
       } else {
-        this.$message.error("创建失败");
+        console.log("更新用例");
+        const req = {
+          module_id: this.currentModule,
+          name: this.caseForm.name,
+          url: this.caseForm.url,
+          method: this.caseForm.method,
+          header: this.caseForm.header,
+          params_type: this.caseForm.params_type,
+          params_body: this.caseForm.params_body,
+          response: this.caseForm.response,
+          assert_type: this.caseForm.assert_type,
+          assert_text: this.caseForm.assert_text,
+        };
+        const resp = await CaseApi.updateCase(this.caseid, req);
+        if (resp.success === true) {
+          this.$message.success("更新成功");
+          this.$emit("fresh", {});
+          this.closecasedialog();
+        } else {
+          this.$message.error("更新失败");
+        }
       }
     },
+
     //获取用例详情
     async caseDetail(id) {
       const resp = await CaseApi.caseDetail(id);
       if (resp.success === true) {
-        this.caseForm.url = resp.result.url;
-        this.caseForm.name = resp.result.name;
-        this.caseForm.method = resp.result.method;
-        this.caseForm.header = resp.result.header;
-        this.caseForm.params_type = resp.result.params_type;
-        this.caseForm.params_body = resp.result.params_body;
-        this.caseForm.assert_type = resp.result.assert_type;
-        this.caseForm.assert_text = resp.result.assert_text;
+        this.caseForm = resp.result;
+        const header = resp.result.header.replace(/'/g, '"');
+        console.log("header", header);
+        const params_body = resp.result.params_body.replace(/'/g, '"');
+        this.caseForm.header = JSON.parse(header);
+        this.caseForm.params_body = JSON.parse(params_body);
       } else {
         this.$message.error(resp.error.msg);
       }

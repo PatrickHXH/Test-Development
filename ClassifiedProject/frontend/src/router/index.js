@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import projectList from "../components/project/projectList.vue";
 import caseModule from "../components/case/caseModule.vue";
+import taskList from "../components/task/taskList.vue";
 import Login from "../views/Login.vue";
 import Navigation from "../views/Navigation.vue";
 
@@ -28,6 +29,10 @@ const routes = [
       {
         path: "case",
         component: caseModule,
+      },
+      {
+        path: "task",
+        component: taskList,
       },
     ],
   },
