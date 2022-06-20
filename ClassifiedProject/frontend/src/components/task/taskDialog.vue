@@ -16,7 +16,7 @@
         <el-form-item label="名称" prop="name">
           <el-input v-model="taskForm.name"></el-input>
         </el-form-item>
-        <el-form-item label="描述" prop="describe">
+        <el-form-item label="描述">
           <el-input type="textarea" v-model="taskForm.describe"></el-input>
         </el-form-item>
         <el-form-item>
@@ -47,9 +47,9 @@
               @select-all="selectionAllCases"
             >
               <el-table-column type="selection" width="55"> </el-table-column>
-              <el-table-column prop="id" label="ID" width="50">
+              <el-table-column prop="id" label="ID" style="width: 50%">
               </el-table-column>
-              <el-table-column prop="name" label="姓名" width="180">
+              <el-table-column prop="name" label="姓名" style="width: 50%">
               </el-table-column>
             </el-table>
             <div>
@@ -66,8 +66,8 @@
         </el-form-item>
         <el-form-item>
           已选择【{{ this.caseNum }}】条用例
-          <el-button @click="closeDialog">关闭</el-button>
-          <el-button type="primary" @click="submitProject('taskForm')"
+          <el-button @click="closeDialog"> 关闭</el-button>
+          <el-button type="primary" @click="submitTask('taskForm')"
             >创建</el-button
           >
         </el-form-item>
@@ -78,15 +78,17 @@
 
 <script>
 import ModuleApi from "../../requests/module.js";
+import taskApi from "../../requests/task.js";
 
 export default {
-  props: ["title", "pid"],
+  props: ["title", "pid", "tid"],
   components: {},
   data() {
     return {
       showTitle: "",
       dialogVisible: true,
       taskForm: {
+        projcet: 0,
         name: "",
         describe: "",
         cases: [],
@@ -109,6 +111,7 @@ export default {
     };
   },
   mounted() {
+    this.taskForm.project = this.pid;
     if (this.title == "create") {
       this.showTitle = "创建任务";
     } else if (this.title == "edite") {
@@ -128,6 +131,20 @@ export default {
       const resp = await ModuleApi.getmodulelist(req);
       if (resp.success === true) {
         this.ModuleData = resp.result;
+        if (this.title == "edite") {
+          this.initTaskInfo();
+        }
+        // this.$message.success("查询成功");
+      } else {
+        this.$message.error("查询失败!");
+      }
+    },
+    //获取任务详情
+    async initTaskInfo() {
+      const resp = await taskApi.getTaskDetail(this.tid);
+      if (resp.success === true) {
+        this.taskForm = resp.result;
+        this.calculationCase();
         // this.$message.success("查询成功");
       } else {
         this.$message.error("查询失败!");
@@ -241,6 +258,37 @@ export default {
       } else {
         this.$message.error(resp.error.message);
       }
+    },
+
+    // 创建和更新任务
+    submitTask(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          if (this.title == "create") {
+            taskApi.createTask(this.taskForm).then((resp) => {
+              if (resp.success === true) {
+                console.log("创建成功");
+                this.closeDialog();
+                this.$emit("fresh", {});
+                this.$message.success("创建成功！");
+              } else {
+                this.$message.error(resp.error.message);
+              }
+            });
+          } else if (this.title == "edite") {
+            taskApi.updateTask(this.tid, this.taskForm).then((resp) => {
+              if (resp.success === true) {
+                this.closeDialog();
+                this.$emit("fresh", {});
+                this.$message.success("更新成功");
+              } else {
+                this.$message.error(resp.error.message);
+              }
+            });
+            console.log("测试");
+          }
+        }
+      });
     },
   },
 };

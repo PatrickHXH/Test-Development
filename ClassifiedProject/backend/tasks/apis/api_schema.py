@@ -3,10 +3,10 @@ from typing import  List,Any
 
 class TaskIn(Schema):
     '''任务入参'''
-    projcet:int
+    project:int
     name: str
     describe: str
-    case: list
+    cases: list
 
 class ResultOut(Schema):
     name: str
@@ -20,3 +20,14 @@ class ResultOut(Schema):
     # create_time: Any
 
 
+class TaskOut(Schema):
+    id:int
+    name:str
+    status:int
+    describe: str=None
+    create_time: Any
+    update_time:Any
+
+class TaskCaseRelevance(Schema):
+    id:int
+    case:str

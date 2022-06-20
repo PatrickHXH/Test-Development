@@ -1,11 +1,17 @@
 <template>
   <div class="project">
+    <!-- 创建按钮 -->
     <div style="height: 50px; width: 100%; text-align: left">
       <el-button type="primary" @click="showDialog">创建</el-button>
     </div>
+    <!-- 项目列表 -->
     <div style="height: 700px">
       <div v-for="(item, index) in projectData" :key="index">
-        <el-col :span="7" class="project-card" style="width: 29%; margin: 2%">
+        <el-col
+          :span="7"
+          class="project-card"
+          style="width: 29%; height: 280px; margin: 20px"
+        >
           <el-card>
             <div slot="header" class="clearfix">
               <span>{{ item.name }}</span>
@@ -29,7 +35,7 @@
             </div>
             {{ item.address }}
             <img
-              style="width: 60%; height: 250px"
+              style="width: 200px; height: 200px"
               :src="item.image"
               class="image"
             />
@@ -37,7 +43,8 @@
         </el-col>
       </div>
     </div>
-    <div style="height: 50%; float: center">
+    <!-- 分页组件 -->
+    <div style="float: center; margin: 20px 0; height: 50px">
       <el-pagination
         background
         :page-size="6"

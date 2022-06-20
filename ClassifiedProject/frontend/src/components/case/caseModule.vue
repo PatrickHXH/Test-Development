@@ -7,7 +7,7 @@
       </span>
       <span>
         <el-select
-          v-model="methodOptions"
+          v-model="projectvalue"
           placeholder="请选择项目"
           @change="changeproject"
         >
@@ -36,7 +36,7 @@
       </span>
     </div>
     <!-- 添加删除节点 -->
-    <div style="width: 20%; float: left">
+    <div style="width: 20%; float: left; height: 80%">
       <el-card>
         <el-button
           type="text"
@@ -226,9 +226,13 @@ export default {
       this.initModuleList(value);
       this.projectvalue = value;
       console.log("当前项目id", this.projectvalue);
+      //传递项目名称给组件（添加节点组件需回显项目名称）
       this.projectlabel = this.options.find(
         (item) => item.value === value
       ).label;
+      // this.projectlabel = this.options.find(
+      //   function(item){if(item.value === value){return item}}
+      // ).label
       console.log("当前项目名称", this.projectlabel);
     },
     //获取模块树
@@ -323,3 +327,10 @@ export default {
   },
 };
 </script>
+
+<style>
+html,
+body {
+  height: 100%;
+}
+</style>

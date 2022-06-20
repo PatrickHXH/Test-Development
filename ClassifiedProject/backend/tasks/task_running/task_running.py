@@ -11,12 +11,16 @@ test_dir = os.path.join(BASE_DIR,'tasks','task_running','test_case.py')
 
 
 def run_task(task_id):
-    Relevance = TaskCaseRelevance.objects.filter(task_id=task_id)
-    list = []
+    print("1.读取测试用例")
+    relevance = TaskCaseRelevance.objects.get(task_id=task_id)
+    relevance_list = json.loads(relevance.case)
+    case_ids = []
+    for rel in relevance_list:
+        case_ids = case_ids + rel["casesId"]
     data = {}
-    for rel in Relevance:
+    for cid in case_ids:
         try:
-            case = TestCase.objects.get(id=rel.case_id,is_delete=False)
+            case = TestCase.objects.get(id=cid,is_delete=False)
             # list.append(model_to_dict(case)
             params_body = case.params_body.replace("\'","\"")
             header = case.header.replace("\'","\"")
@@ -34,14 +38,14 @@ def run_task(task_id):
         except TestCase.DoesNotExist:
             pass
     #写入测试用例至test_data.json
-    print("1.写入测试用例至test_data.json")
+    print("2.写入测试用例至test_data.json")
     with open(data_dir,"w") as f:
         f.write(json.dumps(data,ensure_ascii=False))
     #执行测试用例
-    print("2.执行测试用例")
+    print("3.执行测试用例")
     os.system(f"python {test_dir}")
     #保存测试结果
-    print("3.保存测试结果")
+    print("4.保存测试结果")
     save_test_result(task_id)
     task = TestTask.objects.get(id=task_id)
     task.status = 2
