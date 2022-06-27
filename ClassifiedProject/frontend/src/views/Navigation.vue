@@ -32,6 +32,12 @@
               <template #title> 任务管理</template>
             </el-menu-item>
           </router-link>
+          <router-link to="/main/report">
+            <el-menu-item index="4" class="menu-option">
+              <i class="el-icon-pie-chart"></i>
+              <template #title> 报告管理</template>
+            </el-menu-item>
+          </router-link>
         </el-menu>
       </el-aside>
 

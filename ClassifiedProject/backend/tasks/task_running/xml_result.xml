@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-	<testsuite name="MyTest-20220620214750" tests="2" file=".py" time="0.924" timestamp="2022-06-20T21:47:51" failures="2" errors="0" skipped="0">
-		<testcase classname="MyTest" name="test_api_1_测试用例1" time="0.459" timestamp="2022-06-20T21:47:50" file="tasks\task_running\test_case.py" line="15">
+	<testsuite name="MyTest-20220627163249" tests="2" file=".py" time="0.927" timestamp="2022-06-27T16:32:50" failures="2" errors="0" skipped="0">
+		<testcase classname="MyTest" name="test_api_1_测试用例1" time="0.469" timestamp="2022-06-27T16:32:50" file="tasks\task_running\test_case.py" line="15">
 			<!--test_api_1_测试用例1-->
-			<failure type="AssertionError" message="'string' not found in '{\n  &quot;args&quot;: {\n    &quot;hello&quot;: &quot;wrold&quot;\n  }, \n  &quot;headers&quot;: {\n    &quot;Accept&quot;: &quot;*/*&quot;, \n    &quot;Accept-Encoding&quot;: &quot;gzip, deflate, br&quot;, \n    &quot;Host&quot;: &quot;httpbin.org&quot;, \n    &quot;User-Agent&quot;: &quot;python-requests/2.27.1&quot;, \n    &quot;X-Amzn-Trace-Id&quot;: &quot;Root=1-62b07a86-640294393472e8e61830e016&quot;\n  }, \n  &quot;origin&quot;: &quot;219.137.142.191&quot;, \n  &quot;url&quot;: &quot;http://httpbin.org/get?hello=wrold&quot;\n}\n'"><![CDATA[Traceback (most recent call last):
+			<failure type="AssertionError" message="'string' not found in '{\n  &quot;args&quot;: {\n    &quot;hello&quot;: &quot;wrold&quot;\n  }, \n  &quot;headers&quot;: {\n    &quot;Accept&quot;: &quot;*/*&quot;, \n    &quot;Accept-Encoding&quot;: &quot;gzip, deflate, br&quot;, \n    &quot;Host&quot;: &quot;httpbin.org&quot;, \n    &quot;User-Agent&quot;: &quot;python-requests/2.27.1&quot;, \n    &quot;X-Amzn-Trace-Id&quot;: &quot;Root=1-62b96b31-1df6bc235cd1c4cb4e7d83cf&quot;\n  }, \n  &quot;origin&quot;: &quot;183.63.121.226&quot;, \n  &quot;url&quot;: &quot;http://httpbin.org/get?hello=wrold&quot;\n}\n'"><![CDATA[Traceback (most recent call last):
   File "D:\Program Files (x86)\python\lib\site-packages\ddt.py", line 191, in wrapper
     return func(self, *args, **kwargs)
   File "D:\workspace\TestDevelopment\Test_Development\ClassifiedProject\backend\tasks\task_running\test_case.py", line 28, in test_api
     self.assertIn(assert_text,resp.text)
-AssertionError: 'string' not found in '{\n  "args": {\n    "hello": "wrold"\n  }, \n  "headers": {\n    "Accept": "*/*", \n    "Accept-Encoding": "gzip, deflate, br", \n    "Host": "httpbin.org", \n    "User-Agent": "python-requests/2.27.1", \n    "X-Amzn-Trace-Id": "Root=1-62b07a86-640294393472e8e61830e016"\n  }, \n  "origin": "219.137.142.191", \n  "url": "http://httpbin.org/get?hello=wrold"\n}\n'
+AssertionError: 'string' not found in '{\n  "args": {\n    "hello": "wrold"\n  }, \n  "headers": {\n    "Accept": "*/*", \n    "Accept-Encoding": "gzip, deflate, br", \n    "Host": "httpbin.org", \n    "User-Agent": "python-requests/2.27.1", \n    "X-Amzn-Trace-Id": "Root=1-62b96b31-1df6bc235cd1c4cb4e7d83cf"\n  }, \n  "origin": "183.63.121.226", \n  "url": "http://httpbin.org/get?hello=wrold"\n}\n'
 ]]></failure>
 		</testcase>
-		<testcase classname="MyTest" name="test_api_2_测试用例2" time="0.466" timestamp="2022-06-20T21:47:51" file="tasks\task_running\test_case.py" line="15">
+		<testcase classname="MyTest" name="test_api_2_测试用例2" time="0.458" timestamp="2022-06-27T16:32:50" file="tasks\task_running\test_case.py" line="15">
 			<!--test_api_2_测试用例2-->
-			<failure type="AssertionError" message="'string' not found in '{\n  &quot;args&quot;: {\n    &quot;hello&quot;: &quot;wrold&quot;\n  }, \n  &quot;headers&quot;: {\n    &quot;Accept&quot;: &quot;*/*&quot;, \n    &quot;Accept-Encoding&quot;: &quot;gzip, deflate, br&quot;, \n    &quot;Host&quot;: &quot;httpbin.org&quot;, \n    &quot;User-Agent&quot;: &quot;python-requests/2.27.1&quot;, \n    &quot;X-Amzn-Trace-Id&quot;: &quot;Root=1-62b07a87-14a4a911428ed4ff1b7ac821&quot;\n  }, \n  &quot;origin&quot;: &quot;219.137.142.191&quot;, \n  &quot;url&quot;: &quot;http://httpbin.org/get?hello=wrold&quot;\n}\n'"><![CDATA[Traceback (most recent call last):
+			<failure type="AssertionError" message="'string' not found in '{\n  &quot;args&quot;: {\n    &quot;hello&quot;: &quot;wrold&quot;\n  }, \n  &quot;headers&quot;: {\n    &quot;Accept&quot;: &quot;*/*&quot;, \n    &quot;Accept-Encoding&quot;: &quot;gzip, deflate, br&quot;, \n    &quot;Host&quot;: &quot;httpbin.org&quot;, \n    &quot;User-Agent&quot;: &quot;python-requests/2.27.1&quot;, \n    &quot;X-Amzn-Trace-Id&quot;: &quot;Root=1-62b96b32-18944bb93085693e593e860e&quot;\n  }, \n  &quot;origin&quot;: &quot;183.63.121.226&quot;, \n  &quot;url&quot;: &quot;http://httpbin.org/get?hello=wrold&quot;\n}\n'"><![CDATA[Traceback (most recent call last):
   File "D:\Program Files (x86)\python\lib\site-packages\ddt.py", line 191, in wrapper
     return func(self, *args, **kwargs)
   File "D:\workspace\TestDevelopment\Test_Development\ClassifiedProject\backend\tasks\task_running\test_case.py", line 28, in test_api
     self.assertIn(assert_text,resp.text)
-AssertionError: 'string' not found in '{\n  "args": {\n    "hello": "wrold"\n  }, \n  "headers": {\n    "Accept": "*/*", \n    "Accept-Encoding": "gzip, deflate, br", \n    "Host": "httpbin.org", \n    "User-Agent": "python-requests/2.27.1", \n    "X-Amzn-Trace-Id": "Root=1-62b07a87-14a4a911428ed4ff1b7ac821"\n  }, \n  "origin": "219.137.142.191", \n  "url": "http://httpbin.org/get?hello=wrold"\n}\n'
+AssertionError: 'string' not found in '{\n  "args": {\n    "hello": "wrold"\n  }, \n  "headers": {\n    "Accept": "*/*", \n    "Accept-Encoding": "gzip, deflate, br", \n    "Host": "httpbin.org", \n    "User-Agent": "python-requests/2.27.1", \n    "X-Amzn-Trace-Id": "Root=1-62b96b32-18944bb93085693e593e860e"\n  }, \n  "origin": "183.63.121.226", \n  "url": "http://httpbin.org/get?hello=wrold"\n}\n'
 ]]></failure>
 		</testcase>
 	</testsuite>

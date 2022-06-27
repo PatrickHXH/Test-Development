@@ -9,15 +9,17 @@ class TaskIn(Schema):
     cases: list
 
 class ResultOut(Schema):
+    id:int
     name: str
     passed: int
     error: int
     failure: int
     skipped: int
     tests: int
+    run_time:Any
     # run_time: float
-    # result: int
-    # create_time: Any
+    result: Any
+    create_time: Any
 
 
 class TaskOut(Schema):
@@ -31,3 +33,6 @@ class TaskOut(Schema):
 class TaskCaseRelevance(Schema):
     id:int
     case:str
+
+class ProjectIn(Schema):
+    project_id: int
