@@ -5,6 +5,7 @@ from manager.api_in import EmployeeIn,DepartmentIn
 from manager.api_out import EmployeeOut
 from django.shortcuts import get_object_or_404
 from typing import List
+from ninja.security import APIKeyCookie
 
 router = Router(tags=["manager"])
 
@@ -60,3 +61,5 @@ def delete_employee(request, employee_id: int):
     employee = get_object_or_404(Employee, id=employee_id)
     employee.delete()
     return {"success": True}
+
+

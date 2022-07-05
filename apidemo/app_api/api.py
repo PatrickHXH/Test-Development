@@ -19,8 +19,7 @@ def user(request,user_id:int):
 def read_item(request, item_id):
     return {"item_id": item_id}
 
-from ninja import Schema, Path
-#使用类方法传参
+#使用get传递类方法传参，需要加Path(...)
 class PathDate(Schema):
     year: int
     month: int
@@ -31,9 +30,7 @@ class PathDate(Schema):
 def events(request,date:PathDate=Path(...)):
     return {"date":date.value()}
 
-
 #GET在URL中传参,格式api/xx&xx
-from ninja import NinjaAPI
 weapons = ["Ninjato", "Shuriken", "Katana", "Kama", "Kunai", "Naginata", "Yari"]
 @router.get("/weapons")
 def list_weapons(request, limit: int = None, offset: int = 0):
@@ -146,33 +143,33 @@ class UserSchema(Schema):
     last_name: str
     password:str
     username:str
-# class TaskSchema(Schema):
-#     id: int
-#     title: str
-#     is_completed: bool
-#     owner: UserSchema = None  # ! None - to mark it as optional
-# class TaskSchema(Schema):      #返回字段与数据库定义不一致
-#     id: int
-#     title: str
-#     # The first Field param is the default, use ... for required fields.
-#     completed: bool = Field(..., alias="is_completed")
-#     owner_user_name: str = Field(None, alias="owner.username")
-class TaskSchema(Schema):    #返回中定义方法
+class TaskSchema(Schema):
     id: int
     title: str
     is_completed: bool
-    owner: Optional[str]
-    lower_title: str
-    @staticmethod
-    def resolve_owner(obj):
-        if not obj.owner:
-            return
-        return f"{obj.owner.first_name} {obj.owner.last_name}"
-    def resolve_lower_title(self,obj):
-        return self.title.lower()
+    owner: UserSchema = None  # ! None - to mark it as optional
+class TaskSchema(Schema):      #返回字段与数据库定义不一致
+    id: int
+    title: str
+    completed: bool = Field(..., alias="is_completed")
+    owner_user_name: str = Field(None, alias="owner.username")
+# class TaskSchema(Schema):    #返回中定义方法
+#     id: int
+#     title: str
+#     is_completed: bool
+#     owner: Optional[str]
+#     lower_title: str
+#     @staticmethod
+#     def resolve_owner(obj):
+#         if not obj.owner:
+#             return
+#         else:
+#             return f"{obj.owner.first_name} {obj.owner.last_name}"
+#     def resolve_lower_title(self,obj):
+#         return self.title.lower()
 @router.get("/tasks", response=List[TaskSchema])
 def tasks(request):
-    queryset = Task.objects.select_related("owner")
+    queryset = Task.objects.select_related("owner")   #select_related()函数后，Django会获取相应外键对应的对象，从而在之后需要的时候不必再查询数据库了
     return list(queryset)
 
 
