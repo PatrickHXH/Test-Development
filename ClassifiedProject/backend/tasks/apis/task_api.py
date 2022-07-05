@@ -33,7 +33,7 @@ def create_task(request,data:TaskIn):
     #     case = TestCase.objects.get(id=case)
     #     cases.append({"case":case.id,"module":case.module_id})
     cases_json = json.dumps(data.cases)
-    TaskCaseRelevance.objects.create(task_id=task.id, case=cases_json)
+    TaskCaseRelevance.objects.create(task_id=task.id, case=data.cases)
     task_dict = model_to_dict(task)
     task_dict["cases"] = cases
     return response(result=task_dict)

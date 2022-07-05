@@ -20,24 +20,22 @@ def create_case(request,data:CaseIn):
     # if len(module) == 0:
     #     return response(error=Error.MODULE_NOT_EXIST)
     # else:
-    #     # print(**data.dict())
+    #     print(data.dict())
     #     case = TestCase.objects.create(**data.dict())
     #     return response(result=model_to_dict(case))
-
+    print(data)
     module = get_object_or_404(Module,id=data.module_id)
-    # print(data)
-
     case = TestCase.objects.create(
-        name = data.name,
-        module_id = data.module_id,
-        url = data.url,
-        method = data.method,
-        header = data.header,
-        params_type = data.params_type,
-        params_body = data.params_body,
-        response = data.response,
-        assert_type = data.assert_type,
-        assert_text = data.assert_text
+        name=data.name,
+        module_id=data.module_id,
+        url=data.url,
+        method=data.method,
+        header=data.header,
+        params_type=data.params_type,
+        params_body=data.params_body,
+        response=data.response,
+        assert_type=data.assert_type,
+        assert_text=data.assert_text
     )
     print("打印")
     for extract in data.extract_list:
@@ -47,13 +45,14 @@ def create_case(request,data:CaseIn):
         if len(extract_obj) > 0:
             extract_obj.extract = extract["value"]
         else:
+            print(case.id)
             TestExtract.objects.create(
                 project_id=module.project_id,
-                case=case.id,
+                case_id=case.id,
                 name=extract["name"],
                 extract=extract["value"]
             )
-    return response(result=case)
+    return response(result=model_to_dict(case))
 
 #调式接口
 @router.post("/debug",auth=None)
