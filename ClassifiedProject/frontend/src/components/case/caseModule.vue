@@ -183,9 +183,10 @@ export default {
       currentModule: 0,
     };
   },
-  mounted() {
+  created() {
     console.log("打印");
     this.initProjectList();
+    this.initModuleList(1);
   },
   methods: {
     //初始化获取项目列表

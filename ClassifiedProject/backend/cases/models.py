@@ -33,3 +33,19 @@ class TestCase(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class TestExtract(models.Model):
+    """
+    测试用例表
+    """
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    caes_id = models.IntegerField("用例id",null=False,default=0)
+    name = models.CharField("名称", max_length=50, null=False)
+    extract = models.CharField("提取规则", max_length=200, null=False)
+    vlue= models.CharField("提取值", max_length=200, null=True,default="")  # GET/POST/DELETE/PUT
+    create_time = models.DateTimeField("创建时间", auto_now_add=True)
+    update_time = models.DateTimeField("更新时间", auto_now=True)
+
+    def __str__(self):
+        return self.name

@@ -40,7 +40,7 @@ class CaseIn(Schema):
     response:str
     assert_type:AssertType
     assert_text:str
-
+    extract_list: list = None
 
 
 class CaseDebugIn(Schema):
@@ -71,3 +71,7 @@ class CaseOut(Schema):
     module: ModuleSchema = None  # 关联外键表模块
     create_time: Any
     update_time: Any
+
+class checkExtractIn(Schema):
+    response:str
+    extractList:list

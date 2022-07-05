@@ -19,6 +19,9 @@ class CaseApi {
   deleteCase(id) {
     return request.post("/api/cases/delete/" + id);
   }
+  checkExtract(data) {
+    return request.post("/api/cases/extract", data);
+  }
 }
 
 export default new CaseApi();

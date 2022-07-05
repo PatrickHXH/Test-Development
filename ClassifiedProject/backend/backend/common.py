@@ -21,6 +21,9 @@ class Error:
     CASE_ASSERT_ERROR = {"10054":"请求参数类型错误"}
     CASE_DELETE_ERROR = {"10055":"用例已删除"}
     CASE_URL_ERROR = {"10056": "URL不能为空"}
+    CHECK_EXTRACT_NULL_ERROR = {"10057": "变量或提取规则不能为空"}
+    CHECK_EXTRACT_ERROR = {"10057": "提取规则填写错误"}
+    CHECK_RESP_ERROR = {"10057": "返回体格式错误"}
 
     TASK_DELETE_ERROR = {"10055": "任务已删除"}
 

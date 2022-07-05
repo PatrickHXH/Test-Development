@@ -60,8 +60,9 @@
       >
       </el-input>
     </div>
-    <!-- 选择断言类型 -->
+    <!-- 选择断言类型、提取器 -->
     <div style="margin: 0 10px">
+      <!-- 断言 -->
       <el-collapse v-model="activeNames">
         <el-collapse-item title="断言" name="1">
           <el-radio class="radio" v-model="caseForm.assert_type" label="include"
@@ -83,6 +84,48 @@
             placeholder="断言内容"
           >
           </el-input>
+        </el-collapse-item>
+      </el-collapse>
+      <!-- 提取器 -->
+      <el-collapse>
+        <el-collapse-item title="提取器" name="2">
+          <el-form label-width="80px">
+            <div v-for="(item, index) in extractList" :key="index">
+              <el-form-item label="提取器">
+                <el-col :span="4">
+                  <el-input
+                    v-model="item.name"
+                    placeholder="变量"
+                    style="width: 100px"
+                  ></el-input>
+                </el-col>
+                <el-col class="line" :span="2">:</el-col>
+                <el-col :span="13">
+                  <el-input
+                    v-model="item.value"
+                    placeholder="提取规则"
+                    style="width: 100%"
+                  ></el-input>
+                </el-col>
+              </el-form-item>
+            </div>
+          </el-form>
+          <div style="text-align: left">
+            <el-button
+              type="primary"
+              size="mini"
+              icon="el-icon-plus"
+              @click="addExtract"
+              >添加</el-button
+            >
+            <el-button
+              type="success"
+              size="mini"
+              icon="el-icon-document-checked"
+              @click="checkExtract"
+              >添加</el-button
+            >
+          </div>
         </el-collapse-item>
       </el-collapse>
     </div>
@@ -110,6 +153,7 @@ export default {
     vueJsonEditor,
   },
   mounted() {
+    this.caseForm.module_id = this.currentModule;
     if (this.caseFlag === 1) {
       console.log("创建用例");
     } else {
@@ -152,6 +196,7 @@ export default {
         assert_type: "include",
         assert_text: "",
       },
+      extractList: [],
     };
   },
   methods: {
@@ -183,21 +228,10 @@ export default {
     },
     //创建用例
     async createCase() {
+      this.caseForm.extract_list = this.extractList;
       if (this.caseFlag === 1) {
         console.log("创建用例");
-        const req = {
-          module_id: this.currentModule,
-          name: this.caseForm.name,
-          url: this.caseForm.url,
-          method: this.caseForm.method,
-          header: this.caseForm.header,
-          params_type: this.caseForm.params_type,
-          params_body: this.caseForm.params_body,
-          response: this.caseForm.response,
-          assert_type: this.caseForm.assert_type,
-          assert_text: this.caseForm.assert_text,
-        };
-        const resp = await CaseApi.creatCase(req);
+        const resp = await CaseApi.creatCase(this.caseForm);
         if (resp.success === true) {
           this.$message.success("创建成功");
           this.$emit("fresh", {});
@@ -247,6 +281,27 @@ export default {
     //调用父组件，关闭弹窗
     closecasedialog() {
       this.$emit("cancel", {});
+    },
+    // 添加提取器
+    addExtract() {
+      this.extractList.push({ name: "", value: "" });
+    },
+    // 检查提取器
+    async checkExtract() {
+      if (this.extractList.length === 0) {
+        this.$message.error("请添加提取器");
+        return;
+      }
+      const req = {
+        response: this.caseForm.response,
+        extractList: this.extractList,
+      };
+      const resp = await CaseApi.checkExtract(req);
+      if (resp.success === true) {
+        this.$message.success("校验成功");
+      } else {
+        this.$message.error(resp.error.msg);
+      }
     },
   },
 };

@@ -1,27 +1,59 @@
 from ninja import Router, Query,Path
 from django.forms.models import model_to_dict  #将数据库对象转为字典
 from backend.common import response,Error  #导入自定义返回
-from  cases.models import Module  #导入数据库
-from  cases.models import TestCase  #导入数据库
-from cases.apis.api_schema import ModuleIn,ProjectIn,CaseIn,CaseDebugIn,CaseAssertIn,CaseOut,ModuleSchema  #导入传参类
+from  cases.models import TestCase,TestExtract,Module #导入数据库
+from cases.apis.api_schema import ModuleIn,ProjectIn,CaseIn,CaseDebugIn,CaseAssertIn,CaseOut,ModuleSchema,checkExtractIn  #导入传参类
 from django.shortcuts import get_object_or_404
 import requests
 from backend.pagination import CustomPagination   #自定义分页
 from ninja.pagination import paginate,PageNumberPagination  #分页
 from typing import List  #分页用到的列表
 import json
+import jmespath
 
 router = Router(tags=["cases"])
 
 #创建用例接口
 @router.post("/",auth=None)
 def create_case(request,data:CaseIn):
-    module = Module.objects.filter(id=data.module_id)
-    if len(module) == 0:
-        return response(error=Error.MODULE_NOT_EXIST)
-    else:
-        case = TestCase.objects.create(**data.dict())
-        return response(result=model_to_dict(case))
+    # module = Module.objects.filter(id=data.module_id)
+    # if len(module) == 0:
+    #     return response(error=Error.MODULE_NOT_EXIST)
+    # else:
+    #     # print(**data.dict())
+    #     case = TestCase.objects.create(**data.dict())
+    #     return response(result=model_to_dict(case))
+
+    module = get_object_or_404(Module,id=data.module_id)
+    # print(data)
+
+    case = TestCase.objects.create(
+        name = data.name,
+        module_id = data.module_id,
+        url = data.url,
+        method = data.method,
+        header = data.header,
+        params_type = data.params_type,
+        params_body = data.params_body,
+        response = data.response,
+        assert_type = data.assert_type,
+        assert_text = data.assert_text
+    )
+    print("打印")
+    for extract in data.extract_list:
+        if extract["name"] == "" or extract["value"] == "":
+            continue
+        extract_obj = TestExtract.objects.filter(project_id=module.project_id,name=extract["name"])
+        if len(extract_obj) > 0:
+            extract_obj.extract = extract["value"]
+        else:
+            TestExtract.objects.create(
+                project_id=module.project_id,
+                case=case.id,
+                name=extract["name"],
+                extract=extract["value"]
+            )
+    return response(result=case)
 
 #调式接口
 @router.post("/debug",auth=None)
@@ -134,4 +166,24 @@ def case_detail(request, case_id: int):
                 }
     return response(result=data)
 
-
+#检查提取器
+@router.post("/extract", auth=None)
+def chect_extract(request, data: checkExtractIn):
+    try:
+        resp = json.loads(data.response)
+    except json.decoder.JSONDecodeError:
+        return response(error=Error.CHECK_RESP_ERROR)
+    extract_list = data.extractList
+    print(resp)
+    for extract in extract_list:
+        extract_value = extract["value"]
+        extract_name = extract["name"]
+        if extract_value == "" or  resp == "" or extract_name == "":
+            return response(error=Error.CHECK_EXTRACT_NULL_ERROR)
+        try:
+            result = jmespath.search(extract_value,resp)
+            if result is None:
+                return response(error={"10057":f"提取器错误:{extract_value}"})
+        except jmespath.exceptions.ParseError:
+            return response(error=Error.CHECK_EXTRACT_ERROR)
+    return  response()

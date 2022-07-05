@@ -2,7 +2,9 @@
   <div class="project">
     <!-- 创建按钮 -->
     <div style="height: 50px; width: 100%; text-align: left">
-      <el-button type="primary" @click="showDialog">创建</el-button>
+      <el-button type="primary" @click="showDialog" cy-data="ProjectCreate"
+        >创建</el-button
+      >
     </div>
     <!-- 项目列表 -->
     <div style="height: 700px">
@@ -17,16 +19,22 @@
               <span>{{ item.name }}</span>
               <el-dropdown :hide-on-click="false" style="float: right">
                 <span class="el-dropdown-link">
-                  <i class="el-icon-setting"></i>
+                  <i class="el-icon-setting" cy-data="ProjectSetting"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item>
-                    <el-button type="text" @click="showEdit(item.id)"
+                    <el-button
+                      type="text"
+                      @click="showEdit(item.id)"
+                      cy-data="ProjectEdit"
                       >编辑</el-button
                     >
                   </el-dropdown-item>
                   <el-dropdown-item>
-                    <el-button type="text" @click="deleteProject(item.id)"
+                    <el-button
+                      type="text"
+                      @click="deleteProject(item.id)"
+                      cy-data="ProjectDelete"
                       >删除</el-button
                     >
                   </el-dropdown-item>
@@ -51,6 +59,7 @@
         @current-change="handleCurrentChange"
         :total="total"
         style="margin: 10px"
+        cy-data="ProjectPagination"
       >
       </el-pagination>
     </div>

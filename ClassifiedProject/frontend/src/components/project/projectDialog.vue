@@ -14,10 +14,14 @@
         class="demo-ruleForm"
       >
         <el-form-item label="名称" prop="name">
-          <el-input v-model="projectForm.name"></el-input>
+          <el-input v-model="projectForm.name" cy-data="ProjectName"></el-input>
         </el-form-item>
         <el-form-item label="描述" prop="describe">
-          <el-input type="textarea" v-model="projectForm.describe"></el-input>
+          <el-input
+            type="textarea"
+            v-model="projectForm.describe"
+            cy-data="ProjecDescribe"
+          ></el-input>
         </el-form-item>
         <el-form-item label="图片:" prop="desc">
           <div id="image">
@@ -37,8 +41,13 @@
           </div>
         </el-form-item>
         <el-form-item>
-          <el-button @click="closeDialog">关闭</el-button>
-          <el-button type="primary" @click="submitProject('projectForm')"
+          <el-button @click="closeDialog" cy-data="ProjectClose"
+            >关闭</el-button
+          >
+          <el-button
+            type="primary"
+            @click="submitProject('projectForm')"
+            cy-data="ProjectOk"
             >创建</el-button
           >
         </el-form-item>

@@ -18,10 +18,14 @@
                 class="demo-loginForm"
               >
                 <el-form-item label="用户名" prop="username">
-                  <el-input v-model="loginForm.username"></el-input>
+                  <el-input
+                    v-model="loginForm.username"
+                    cy-data="LoginUsername"
+                  ></el-input>
                 </el-form-item>
                 <el-form-item label="密码" prop="password">
                   <el-input
+                    cy-data="LoginPassword"
                     v-model="loginForm.password"
                     type="password"
                   ></el-input>
@@ -31,6 +35,7 @@
                     type="primary"
                     style="width: 350px"
                     @click="submitLogin('loginForm')"
+                    cy-data="loginButton"
                     >登录</el-button
                   >
                 </el-form-item>

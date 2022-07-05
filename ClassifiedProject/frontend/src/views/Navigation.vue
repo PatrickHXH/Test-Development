@@ -51,7 +51,7 @@
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
-          <span>欢迎,{{ user }}</span>
+          <span cy-data="loginSuccess">欢迎,{{ user }}</span>
         </el-header>
 
         <el-main>
