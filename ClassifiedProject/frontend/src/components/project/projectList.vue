@@ -103,6 +103,7 @@ export default {
     //获取项目列表
     async initProjectList() {
       console.log("获取项目列表");
+      // this.headers = {"Authorization":"z2w3sj8kjtgtwdxg7ec9ne8ksx399m4a"}
       const resp = await ProjectApi.getproject(this.req);
       console.log(resp);
       if (resp.success === true) {

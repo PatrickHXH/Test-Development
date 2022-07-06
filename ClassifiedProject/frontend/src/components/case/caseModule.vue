@@ -280,6 +280,7 @@ export default {
     // 点击模块节点
     NodeClick(data) {
       console.log("点击节点", data);
+      this.req.page = 1;
       this.currentModule = data.id;
       this.initCaseList(data.id);
     },

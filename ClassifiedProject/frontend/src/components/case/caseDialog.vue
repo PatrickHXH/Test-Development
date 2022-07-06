@@ -123,7 +123,7 @@
               size="mini"
               icon="el-icon-document-checked"
               @click="checkExtract"
-              >添加</el-button
+              >校验</el-button
             >
           </div>
         </el-collapse-item>

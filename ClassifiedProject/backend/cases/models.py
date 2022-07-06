@@ -40,7 +40,7 @@ class TestExtract(models.Model):
     测试用例表
     """
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    caes_id = models.IntegerField("用例id",null=False,default=0)
+    case_id = models.IntegerField("用例ID", null=False, default=0)
     name = models.CharField("名称", max_length=50, null=False)
     extract = models.CharField("提取规则", max_length=200, null=False)
     vlue= models.CharField("提取值", max_length=200, null=True,default="")  # GET/POST/DELETE/PUT
