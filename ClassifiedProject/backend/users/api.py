@@ -3,7 +3,7 @@ from backend.common import response, Error
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.contrib.sessions.models import Session
-from users.api_schema import RegisterIn, LoginIn
+from users.api_schema import RegisterIn, LoginIn,LoginOut
 
 router = Router(tags=["users"])
 
@@ -34,6 +34,7 @@ def user_login(request,data:LoginIn):
         return  response(error=Error.USER_OR_PAWD_NULL)
     else:
         user = auth.authenticate(username=username,password=password)
+        print(user)
         if user is not None:
             #auth.login登录保存session到表里
             auth.login(request,user)
@@ -46,6 +47,13 @@ def user_login(request,data:LoginIn):
             return  response(result=user_info)
         else:
             return response(error=Error.USER_OR_PAWD_EROOR)
+
+#退出登录功能
+@router.post("/logout",auth=None)
+def user_login(request,data:LoginOut):
+    #退出登陆
+    auth.logout(request)
+    return  response()
 
 @router.get("/bearer")
 def bearer(request):

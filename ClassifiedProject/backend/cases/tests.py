@@ -1,16 +1,13 @@
-from django.test import TestCase
+def get_replace_string(s):
+    if  "^{" and "}$" in s:
+        s_left = s.split("^{")[0]
+        s_right = s.split("^{")[1]
+        print(s_right)
+        s2_left = s_right.split("}$")[0]
+        s2_right = s_right.split("}$")[1]
+        print(s2_left)
+        url = "www.baidu.com"
+        s_string = s_left + url + s2_right
+        print(s_string)
 
-# Create your tests here.
-{
-"url": "http://httpbin.org/get",
-"method": "post",
-"header" :{"totken": "123"},
-"params_type":"params",
-"params_body": {"hello" : "wrold"}
-}
-def hello_3(x='Hello',y='world'):#定义函数
-    print('%s,%s!'%(x,y))
-
-params={'x':'Sir Robin','y':'Well met'}
-
-hello_3(**params)#调用,参数为**params
+get_replace_string("^{token}$")

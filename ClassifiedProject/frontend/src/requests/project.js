@@ -5,12 +5,13 @@ class ProjectApi {
   getproject(data) {
     return request.get("/api/projects/list", data);
   }
-  // getproject(data) {
+  // getproject(params, headers) {
   //   return axios({
   //     method: "get",
   //     url: "/api/projects/list",
   //     timeout: 20000,
-  //     data: data,
+  //     params: params,
+  //     headers: headers,
   //   });
   // }
   getoneproject(id) {
