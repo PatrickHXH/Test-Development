@@ -103,9 +103,10 @@ export default {
     //获取项目列表
     async initProjectList() {
       console.log("获取项目列表");
-      // this.headers = {"Authorization":"z2w3sj8kjtgtwdxg7ec9ne8ksx399m4a"}
-      const resp = await ProjectApi.getproject(this.req);
+      // var header = { Authorization: "bearer" + " " + sessionStorage.session };
+      var resp = await ProjectApi.getproject(this.req);
       console.log(resp);
+      // resp = resp.data;
       if (resp.success === true) {
         // 处理图片路径
         for (let i = 0; i < resp.items.length; i++) {

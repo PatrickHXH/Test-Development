@@ -11,3 +11,6 @@ class RegisterIn(Schema):
 class LoginIn(Schema):
     username: str
     password: str
+
+class LoginOut(Schema):
+    username: str

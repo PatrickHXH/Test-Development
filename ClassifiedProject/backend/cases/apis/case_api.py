@@ -10,6 +10,7 @@ from ninja.pagination import paginate,PageNumberPagination  #分页
 from typing import List  #分页用到的列表
 import json
 import jmespath
+from  cases.apis.common import  get_replace_string
 
 router = Router(tags=["cases"])
 
@@ -65,18 +66,32 @@ def debug_case(request,data:CaseDebugIn):
 
     print(type(header),header)
     print(type(params_body), params_body)
+
+    url = get_replace_string(url)
+    print("url地址：",url)
+
+    header_new = {}
+    for key,value in header.items():
+        header_new[key] = get_replace_string(value)
+    print("header_new",header_new)
+
+    params_body_new = {}
+    for key,value in params_body.items():
+        params_body_new[key] = get_replace_string(value)
+    print("params_body_new",params_body_new)
+
     # if method not in  ["get","post"]:
     #     return response(error=Error.CASE_METHOD_ERROR)
     if url == None or url == "":
         return response(error=Error.CASE_URL_ERROR)
 
     if method == "get":
-        resp = requests.get(url,params=params_body,headers=header)
+        resp = requests.get(url,params=params_body_new,headers=header_new)
     if method == "post":
         if params_type == "json":
-            resp = requests.post(url,json=params_body,headers=header)
+            resp = requests.post(url,json=params_body_new,headers=header_new)
         elif params_type == "form":
-            resp = requests.post(url,data=params_body,headers=header)
+            resp = requests.post(url,data=params_body_new,headers=header_new)
         else:
             return response(error=Error.MODULE_NOT_EXIST)
     print(resp)
