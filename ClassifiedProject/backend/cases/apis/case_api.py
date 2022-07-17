@@ -11,7 +11,7 @@ from typing import List  #分页用到的列表
 import json
 import jmespath
 from  cases.apis.common import  get_replace_string
-
+import sqlite3
 router = Router(tags=["cases"])
 
 #创建用例接口
@@ -68,7 +68,7 @@ def debug_case(request,data:CaseDebugIn):
     print(type(params_body), params_body)
 
     url = get_replace_string(url)
-    print("url地址：",url)
+    print(url)
 
     header_new = {}
     for key,value in header.items():
@@ -138,7 +138,23 @@ def update_case(request, case_id: int,  payload: CaseIn):
         setattr(case, attr, value)
     case.save()
 
+    module = get_object_or_404(Module, id=payload.module_id)
+    for extract in payload.extract_list:
+        if extract["name"] == "" or extract["value"] == "":
+            continue
+        extract_obj = TestExtract.objects.filter(
+            project_id=module.project_id, name=extract["name"])
+        if len(extract_obj) > 0:
+            extract_obj.extract = extract["value"]
+        else:
+            TestExtract.objects.create(
+                project_id=module.project_id,
+                case_id=case.id,
+                name=extract["name"],
+                extract=extract["value"]
+            )
     return response()
+
 
 #删除用例接口
 @router.post("/delete/{case_id}", auth=None)
@@ -196,6 +212,7 @@ def chect_extract(request, data: checkExtractIn):
             return response(error=Error.CHECK_EXTRACT_NULL_ERROR)
         try:
             result = jmespath.search(extract_value,resp)
+            print(result)
             if result is None:
                 return response(error={"10057":f"提取器错误:{extract_value}"})
         except jmespath.exceptions.ParseError:

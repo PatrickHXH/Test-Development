@@ -30,7 +30,7 @@ def save_test_result(task_id):
     skipped = testsuite[0].getAttribute("skipped")
     passed = int(tests) - int(failures) - int(errors) - int(skipped)
 
-    with open(TEST_REPORT, "r") as f:
+    with open(TEST_REPORT, "r",encoding="utf-8") as f:
         result = f.read()
 
         TestResult.objects.create(

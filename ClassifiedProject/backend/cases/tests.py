@@ -1,13 +1,17 @@
-def get_replace_string(s):
-    if  "^{" and "}$" in s:
-        s_left = s.split("^{")[0]
-        s_right = s.split("^{")[1]
-        print(s_right)
-        s2_left = s_right.split("}$")[0]
-        s2_right = s_right.split("}$")[1]
-        print(s2_left)
-        url = "www.baidu.com"
-        s_string = s_left + url + s2_right
-        print(s_string)
+import re
 
-get_replace_string("^{token}$")
+line = "Cats are smarter than dogs"
+s = "http://${Host}/get"
+re.search('(?<=\${).+(?=})', s)
+matchObj = re.match(r'(.*) are (.*)', line)
+print(matchObj.group())
+
+if matchObj:
+    print("matchObj.group() : ", matchObj.group())
+    print("matchObj.group(1) : ", matchObj.group(1))
+    print("matchObj.group(2) : ", matchObj.group(2))
+else:
+    print
+    ("No match!!")
+
+    # , re.M | re.I

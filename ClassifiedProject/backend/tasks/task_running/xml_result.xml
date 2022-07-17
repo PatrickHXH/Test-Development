@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-	<testsuite name="MyTest-20220627163249" tests="2" file=".py" time="0.927" timestamp="2022-06-27T16:32:50" failures="2" errors="0" skipped="0">
-		<testcase classname="MyTest" name="test_api_1_测试用例1" time="0.469" timestamp="2022-06-27T16:32:50" file="tasks\task_running\test_case.py" line="15">
-			<!--test_api_1_测试用例1-->
-			<failure type="AssertionError" message="'string' not found in '{\n  &quot;args&quot;: {\n    &quot;hello&quot;: &quot;wrold&quot;\n  }, \n  &quot;headers&quot;: {\n    &quot;Accept&quot;: &quot;*/*&quot;, \n    &quot;Accept-Encoding&quot;: &quot;gzip, deflate, br&quot;, \n    &quot;Host&quot;: &quot;httpbin.org&quot;, \n    &quot;User-Agent&quot;: &quot;python-requests/2.27.1&quot;, \n    &quot;X-Amzn-Trace-Id&quot;: &quot;Root=1-62b96b31-1df6bc235cd1c4cb4e7d83cf&quot;\n  }, \n  &quot;origin&quot;: &quot;183.63.121.226&quot;, \n  &quot;url&quot;: &quot;http://httpbin.org/get?hello=wrold&quot;\n}\n'"><![CDATA[Traceback (most recent call last):
-  File "D:\Program Files (x86)\python\lib\site-packages\ddt.py", line 191, in wrapper
-    return func(self, *args, **kwargs)
-  File "D:\workspace\TestDevelopment\Test_Development\ClassifiedProject\backend\tasks\task_running\test_case.py", line 28, in test_api
-    self.assertIn(assert_text,resp.text)
-AssertionError: 'string' not found in '{\n  "args": {\n    "hello": "wrold"\n  }, \n  "headers": {\n    "Accept": "*/*", \n    "Accept-Encoding": "gzip, deflate, br", \n    "Host": "httpbin.org", \n    "User-Agent": "python-requests/2.27.1", \n    "X-Amzn-Trace-Id": "Root=1-62b96b31-1df6bc235cd1c4cb4e7d83cf"\n  }, \n  "origin": "183.63.121.226", \n  "url": "http://httpbin.org/get?hello=wrold"\n}\n'
-]]></failure>
+	<testsuite name="MyTest-20220712110856" tests="2" file=".py" time="19.953" timestamp="2022-07-12T11:09:16" failures="0" errors="0" skipped="0">
+		<testcase classname="MyTest" name="test_api_1_用例测试1" time="19.435" timestamp="2022-07-12T11:09:16" file="tasks\task_running\test_case.py" line="21">
+			<!--test_api_1_用例测试1-->
+			<system-out><![CDATA[D:\workspace\TestDevelopment\Test_Development\ClassifiedProject\backend\db.sqlite3
+D:\workspace\TestDevelopment\Test_Development\ClassifiedProject\backend\db.sqlite3
+header_new {'token': '1123123'}
+params_body_new {}
+{'args': {}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate, br', 'Host': 'httpbin.org', 'Token': '1123123', 'User-Agent': 'python-requests/2.27.1', 'X-Amzn-Trace-Id': 'Root=1-62cce5dd-645030204e8832d14b7afb6b'}, 'origin': '183.63.121.226', 'url': 'http://httpbin.org/get'}
+extract_obj[2] headers.Token
+]]></system-out>
 		</testcase>
-		<testcase classname="MyTest" name="test_api_2_测试用例2" time="0.458" timestamp="2022-06-27T16:32:50" file="tasks\task_running\test_case.py" line="15">
-			<!--test_api_2_测试用例2-->
-			<failure type="AssertionError" message="'string' not found in '{\n  &quot;args&quot;: {\n    &quot;hello&quot;: &quot;wrold&quot;\n  }, \n  &quot;headers&quot;: {\n    &quot;Accept&quot;: &quot;*/*&quot;, \n    &quot;Accept-Encoding&quot;: &quot;gzip, deflate, br&quot;, \n    &quot;Host&quot;: &quot;httpbin.org&quot;, \n    &quot;User-Agent&quot;: &quot;python-requests/2.27.1&quot;, \n    &quot;X-Amzn-Trace-Id&quot;: &quot;Root=1-62b96b32-18944bb93085693e593e860e&quot;\n  }, \n  &quot;origin&quot;: &quot;183.63.121.226&quot;, \n  &quot;url&quot;: &quot;http://httpbin.org/get?hello=wrold&quot;\n}\n'"><![CDATA[Traceback (most recent call last):
-  File "D:\Program Files (x86)\python\lib\site-packages\ddt.py", line 191, in wrapper
-    return func(self, *args, **kwargs)
-  File "D:\workspace\TestDevelopment\Test_Development\ClassifiedProject\backend\tasks\task_running\test_case.py", line 28, in test_api
-    self.assertIn(assert_text,resp.text)
-AssertionError: 'string' not found in '{\n  "args": {\n    "hello": "wrold"\n  }, \n  "headers": {\n    "Accept": "*/*", \n    "Accept-Encoding": "gzip, deflate, br", \n    "Host": "httpbin.org", \n    "User-Agent": "python-requests/2.27.1", \n    "X-Amzn-Trace-Id": "Root=1-62b96b32-18944bb93085693e593e860e"\n  }, \n  "origin": "183.63.121.226", \n  "url": "http://httpbin.org/get?hello=wrold"\n}\n'
-]]></failure>
+		<testcase classname="MyTest" name="test_api_2_用例测试2" time="0.518" timestamp="2022-07-12T11:09:16" file="tasks\task_running\test_case.py" line="21">
+			<!--test_api_2_用例测试2-->
+			<system-out><![CDATA[D:\workspace\TestDevelopment\Test_Development\ClassifiedProject\backend\db.sqlite3
+D:\workspace\TestDevelopment\Test_Development\ClassifiedProject\backend\db.sqlite3
+(8, 'token123', 'headers.Token', '1123123', '2022-07-12 10:25:46.244282', '2022-07-12 10:25:46.244282', 1, 81)
+1123123
+D:\workspace\TestDevelopment\Test_Development\ClassifiedProject\backend\db.sqlite3
+(4, 'Host', 'headers.Host', 'httpbin.org', '2022-07-05 06:50:30.216758', '2022-07-05 06:50:30.216758', 22, 77)
+httpbin.org
+header_new {'token': '1123123', 'host': 'httpbin.org'}
+params_body_new {}
+]]></system-out>
 		</testcase>
 	</testsuite>
 </testsuites>

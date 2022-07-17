@@ -130,6 +130,7 @@ export default {
     this.taskHeartbeat = setInterval(() => {
       this.initTaskList();
     }, 5000);
+    // this.taskHeartbeat = setInterval(this.initTaskList(), 5000);
   },
   destroyed() {
     clearInterval(this.taskHeartbeat);
@@ -217,7 +218,7 @@ export default {
     },
     //执行任务
     async runTask(row) {
-      console.log(row);
+      console.log(row.id);
       const resp = await taskApi.runningTask(row.id);
       if (resp.success === true) {
         this.initTaskList();

@@ -3,7 +3,7 @@ from ninja import Router, Query,Path
 from django.forms.models import model_to_dict
 from django.db.utils import IntegrityError
 from backend.common import response,Error
-from tasks.apis.api_schema import TaskIn,TaskOut
+from tasks.apis.api_schema import TaskIn,TaskOut,CaseLIstIn
 from projects.models import Project
 from cases.models import TestCase
 from tasks.models import TestTask,TaskCaseRelevance
@@ -114,3 +114,37 @@ def delete_case(request, task_id: int):
 def task_list(request,data:ProjectIn=Query(...)):
     print(data.project_id)
     return TestTask.objects.filter(project_id=data.project_id,is_delete=False).all()
+
+# 获取任务下用例详情
+@router.get("/{task_id}/caseList", auth=None)
+def get_task_case_list(request, task_id: int):
+    """
+    获取任务详情
+    auth=None 该接口不需要认证
+    """
+    task = get_object_or_404(TestTask,id=task_id)
+    if task.is_delete is True:
+        return response(error=Error.TASK_DELETE_ERROR)
+    relevance = TaskCaseRelevance.objects.get(task_id=task.id)
+    relevance_list = json.loads(relevance.case)
+    cases_list = []
+    for rel in relevance_list:
+        cases_list = cases_list + rel["casesId"]
+    print(cases_list)
+    cases_info =[]
+    for case in cases_list:
+        case_obj = TestCase.objects.get(id=case)
+        cases_info.append(model_to_dict(case_obj))
+    return response(result=cases_info)
+
+#保存调整顺序的任务用例
+@router.put("/{task_id}/caseList", auth=None)
+def put_task_case_list(request, task_id: int,data:CaseLIstIn):
+    """
+    保存调整顺序的任务用例
+    auth=None 该接口不需要认证
+    """
+    relevance = get_object_or_404(TaskCaseRelevance,task_id=task_id)
+    relevance.case_list = json.dumps(data.caseList)
+    relevance.save()
+    return response(result=[])

@@ -241,19 +241,9 @@ export default {
         }
       } else {
         console.log("更新用例");
-        const req = {
-          module_id: this.currentModule,
-          name: this.caseForm.name,
-          url: this.caseForm.url,
-          method: this.caseForm.method,
-          header: this.caseForm.header,
-          params_type: this.caseForm.params_type,
-          params_body: this.caseForm.params_body,
-          response: this.caseForm.response,
-          assert_type: this.caseForm.assert_type,
-          assert_text: this.caseForm.assert_text,
-        };
-        const resp = await CaseApi.updateCase(this.caseid, req);
+        this.caseForm.module_id = this.currentModule;
+        this.caseForm.extract_list = this.extractList;
+        const resp = await CaseApi.updateCase(this.caseid, this.caseForm);
         if (resp.success === true) {
           this.$message.success("更新成功");
           this.$emit("fresh", {});

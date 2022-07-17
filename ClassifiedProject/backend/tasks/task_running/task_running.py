@@ -5,7 +5,7 @@ import os
 from backend.settings import BASE_DIR
 from tasks.task_running.test_result import save_test_result
 import threading
-
+import jmespath
 data_dir = os.path.join(BASE_DIR,'tasks','task_running','test_data.json')
 test_dir = os.path.join(BASE_DIR,'tasks','task_running','test_case.py')
 
@@ -13,10 +13,12 @@ test_dir = os.path.join(BASE_DIR,'tasks','task_running','test_case.py')
 def run_task(task_id):
     print("1.读取测试用例")
     relevance = TaskCaseRelevance.objects.get(task_id=task_id)
-    relevance_list = json.loads(relevance.case)
+    relevance_list = relevance.case.replace("\'","\"")
+    relevance_list = json.loads(relevance_list)
     case_ids = []
     for rel in relevance_list:
         case_ids = case_ids + rel["casesId"]
+    print(case_ids)
     data = {}
     for cid in case_ids:
         try:
@@ -27,6 +29,7 @@ def run_task(task_id):
             header_dict = json.loads(header)
             params_body_dict = json.loads(params_body)
             data[case.name] = {
+                "case_id":case.id,
                 "url": case.url,
                 "method": case.method,
                 "header": header_dict,

@@ -36,3 +36,6 @@ class TaskCaseRelevance(Schema):
 
 class ProjectIn(Schema):
     project_id: int
+
+class CaseLIstIn(Schema):
+    caseList: list
