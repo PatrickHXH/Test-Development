@@ -33,7 +33,11 @@ def create_task(request,data:TaskIn):
     #     case = TestCase.objects.get(id=case)
     #     cases.append({"case":case.id,"module":case.module_id})
     cases_json = json.dumps(data.cases)
-    TaskCaseRelevance.objects.create(task_id=task.id, case=data.cases)
+    case_list = []
+    for c in data.cases:
+        case_list = case_list + c["casesId"]
+    case_list_json = json.dumps(case_list)
+    TaskCaseRelevance.objects.create(task_id=task.id, case=cases_json,case_list=case_list_json)
     task_dict = model_to_dict(task)
     task_dict["cases"] = cases
     return response(result=task_dict)
@@ -122,14 +126,8 @@ def get_task_case_list(request, task_id: int):
     获取任务详情
     auth=None 该接口不需要认证
     """
-    task = get_object_or_404(TestTask,id=task_id)
-    if task.is_delete is True:
-        return response(error=Error.TASK_DELETE_ERROR)
-    relevance = TaskCaseRelevance.objects.get(task_id=task.id)
-    relevance_list = json.loads(relevance.case)
-    cases_list = []
-    for rel in relevance_list:
-        cases_list = cases_list + rel["casesId"]
+    relevance = get_object_or_404(TaskCaseRelevance,task_id=task_id)
+    cases_list = json.loads(relevance.case_list)
     print(cases_list)
     cases_info =[]
     for case in cases_list:

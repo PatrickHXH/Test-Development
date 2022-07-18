@@ -60,6 +60,9 @@
             <el-button @click="runTask(scope.row)" type="text" size="small"
               >执行</el-button
             >
+            <el-button @click="showCase(scope.row)" type="text" size="small"
+              >顺序</el-button
+            >
             <el-button type="text" size="small" @click="editTask(scope.row)"
               >编辑</el-button
             >
@@ -88,6 +91,13 @@
         @fresh="initTaskList"
         :tid="taskId"
       ></taskDialog>
+      <taskCase
+        v-if="caseFlag"
+        @cancel="closeDialog"
+        :pid="projectForm.id"
+        @fresh="initTaskList"
+        :tid="taskId"
+      ></taskCase>
     </div>
   </div>
 </template>
@@ -95,11 +105,13 @@
 <script>
 import ProjectApi from "../../requests/project.js";
 import taskDialog from "@/components/task/taskDialog";
+import taskCase from "@/components/task/taskCase";
 import taskApi from "../../requests/task.js";
 
 export default {
   components: {
     taskDialog,
+    taskCase,
   },
   data() {
     return {
@@ -123,6 +135,7 @@ export default {
       currentPorjectId: 0,
       taskData: [],
       taskHeartbeat: null,
+      caseFlag: false,
     };
   },
   created() {
@@ -177,6 +190,11 @@ export default {
     },
     closeDialog() {
       this.show = false;
+      this.caseFlag = false;
+    },
+    showCase(row) {
+      this.taskId = row.id;
+      this.caseFlag = true;
     },
     //编辑任务
     editTask(row) {

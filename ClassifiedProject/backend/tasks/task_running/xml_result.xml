@@ -1,26 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-	<testsuite name="MyTest-20220712110856" tests="2" file=".py" time="19.953" timestamp="2022-07-12T11:09:16" failures="0" errors="0" skipped="0">
-		<testcase classname="MyTest" name="test_api_1_用例测试1" time="19.435" timestamp="2022-07-12T11:09:16" file="tasks\task_running\test_case.py" line="21">
-			<!--test_api_1_用例测试1-->
+	<testsuite name="MyTest-20220717205334" tests="4" file=".py" time="2.335" timestamp="2022-07-17T20:53:36" failures="0" errors="2" skipped="0">
+		<testcase classname="MyTest" name="test_api_1_测试用例11212124212" time="0.492" timestamp="2022-07-17T20:53:34" file="tasks\task_running\test_case.py" line="21">
+			<!--test_api_1_测试用例11212124212-->
 			<system-out><![CDATA[D:\workspace\TestDevelopment\Test_Development\ClassifiedProject\backend\db.sqlite3
 D:\workspace\TestDevelopment\Test_Development\ClassifiedProject\backend\db.sqlite3
-header_new {'token': '1123123'}
-params_body_new {}
-{'args': {}, 'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate, br', 'Host': 'httpbin.org', 'Token': '1123123', 'User-Agent': 'python-requests/2.27.1', 'X-Amzn-Trace-Id': 'Root=1-62cce5dd-645030204e8832d14b7afb6b'}, 'origin': '183.63.121.226', 'url': 'http://httpbin.org/get'}
-extract_obj[2] headers.Token
+header_new {'totken': '123'}
+D:\workspace\TestDevelopment\Test_Development\ClassifiedProject\backend\db.sqlite3
+params_body_new {'hello': 'wrold'}
 ]]></system-out>
 		</testcase>
-		<testcase classname="MyTest" name="test_api_2_用例测试2" time="0.518" timestamp="2022-07-12T11:09:16" file="tasks\task_running\test_case.py" line="21">
-			<!--test_api_2_用例测试2-->
+		<testcase classname="MyTest" name="test_api_2_测试用例2" time="1.834" timestamp="2022-07-17T20:53:36" file="tasks\task_running\test_case.py" line="21">
+			<!--test_api_2_测试用例2-->
 			<system-out><![CDATA[D:\workspace\TestDevelopment\Test_Development\ClassifiedProject\backend\db.sqlite3
 D:\workspace\TestDevelopment\Test_Development\ClassifiedProject\backend\db.sqlite3
-(8, 'token123', 'headers.Token', '1123123', '2022-07-12 10:25:46.244282', '2022-07-12 10:25:46.244282', 1, 81)
-1123123
+header_new {'totken': '123'}
 D:\workspace\TestDevelopment\Test_Development\ClassifiedProject\backend\db.sqlite3
-(4, 'Host', 'headers.Host', 'httpbin.org', '2022-07-05 06:50:30.216758', '2022-07-05 06:50:30.216758', 22, 77)
-httpbin.org
-header_new {'token': '1123123', 'host': 'httpbin.org'}
+params_body_new {'hello': 'wrold'}
+]]></system-out>
+		</testcase>
+		<testcase classname="MyTest" name="test_api_3_string123" time="0.006" timestamp="2022-07-17T20:53:36" file="tasks\task_running\test_case.py" line="21">
+			<!--test_api_3_string123-->
+			<error type="MissingSchema" message="Invalid URL 'string': No scheme supplied. Perhaps you meant http://string?"><![CDATA[Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\ddt.py", line 191, in wrapper
+    return func(self, *args, **kwargs)
+  File "D:\workspace\TestDevelopment\Test_Development\ClassifiedProject\backend\tasks\task_running\test_case.py", line 37, in test_api
+    resp = requests.get(url, params=params_body_new, headers=header_new)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 75, in get
+    return request('get', url, params=params, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 61, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 515, in request
+    prep = self.prepare_request(req)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 443, in prepare_request
+    p.prepare(
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\models.py", line 318, in prepare
+    self.prepare_url(url, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\models.py", line 392, in prepare_url
+    raise MissingSchema(error)
+requests.exceptions.MissingSchema: Invalid URL 'string': No scheme supplied. Perhaps you meant http://string?
+]]></error>
+			<system-out><![CDATA[D:\workspace\TestDevelopment\Test_Development\ClassifiedProject\backend\db.sqlite3
+header_new {}
+params_body_new {}
+]]></system-out>
+		</testcase>
+		<testcase classname="MyTest" name="test_api_4_string1" time="0.002" timestamp="2022-07-17T20:53:36" file="tasks\task_running\test_case.py" line="21">
+			<!--test_api_4_string1-->
+			<error type="MissingSchema" message="Invalid URL 'string': No scheme supplied. Perhaps you meant http://string?"><![CDATA[Traceback (most recent call last):
+  File "D:\Program Files (x86)\python\lib\site-packages\ddt.py", line 191, in wrapper
+    return func(self, *args, **kwargs)
+  File "D:\workspace\TestDevelopment\Test_Development\ClassifiedProject\backend\tasks\task_running\test_case.py", line 37, in test_api
+    resp = requests.get(url, params=params_body_new, headers=header_new)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 75, in get
+    return request('get', url, params=params, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\api.py", line 61, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 515, in request
+    prep = self.prepare_request(req)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\sessions.py", line 443, in prepare_request
+    p.prepare(
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\models.py", line 318, in prepare
+    self.prepare_url(url, params)
+  File "D:\Program Files (x86)\python\lib\site-packages\requests\models.py", line 392, in prepare_url
+    raise MissingSchema(error)
+requests.exceptions.MissingSchema: Invalid URL 'string': No scheme supplied. Perhaps you meant http://string?
+]]></error>
+			<system-out><![CDATA[D:\workspace\TestDevelopment\Test_Development\ClassifiedProject\backend\db.sqlite3
+header_new {}
 params_body_new {}
 ]]></system-out>
 		</testcase>

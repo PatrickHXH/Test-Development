@@ -19,6 +19,12 @@ class TaskApi {
   runningTask(tid) {
     return request.post("/api/tasks/" + tid + "/running");
   }
+  getTaskCaseList(tid) {
+    return request.get("/api/tasks/" + tid + "/caseList");
+  }
+  updateTaskCaseList(tid, data) {
+    return request.put("/api/tasks/" + tid + "/caseList", data);
+  }
 }
 
 export default new TaskApi();
