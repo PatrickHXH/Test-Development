@@ -38,6 +38,12 @@
               <template #title> 报告管理</template>
             </el-menu-item>
           </router-link>
+          <router-link to="/main/extract">
+            <el-menu-item index="5" class="menu-option">
+              <i class="el-icon-s-operation"></i>
+              <template #title> 变量管理</template>
+            </el-menu-item>
+          </router-link>
         </el-menu>
       </el-aside>
 
