@@ -80,8 +80,13 @@ def update_case(request, task_id: int,  data: TaskIn):
     task.describe = data.describe
     task. save()
 
+    case_list = []
+    for case in data.cases:
+        case_list = case_list + case["casesId"]
+
     relevance = TaskCaseRelevance.objects.get(task_id=task.id)
     relevance.case = json.dumps(data.cases)
+    relevance.case_list = json.dumps(case_list)
     relevance.save()
     # relevance = TaskCaseRelevance.objects.filter(task_id=task_id)
     # relevance.delete()

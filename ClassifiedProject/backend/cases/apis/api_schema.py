@@ -75,3 +75,12 @@ class CaseOut(Schema):
 class checkExtractIn(Schema):
     response:str
     extractList:list
+
+class ExtractOut(Schema):
+    id:int
+    name: str
+    extract: str
+    vlue: str
+    case_id: str
+    create_time: Any
+    update_time:Any
