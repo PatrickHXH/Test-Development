@@ -7,6 +7,7 @@ from cases.apis.case_api import router as cases_router
 from tasks.apis.task_api import router as tasks_router
 from tasks.apis.report_api  import router as reports_router
 from cases.apis.extract_api  import router as extract_router
+from performance.api import router as performance_router
 from ninja.security import HttpBearer
 from django.contrib.sessions.models import Session
 import  datetime
@@ -55,3 +56,4 @@ api.add_router("/cases/", cases_router)
 api.add_router("/tasks/", tasks_router)
 api.add_router("/reports/", reports_router)
 api.add_router("/extracts/", extract_router)
+api.add_router("/performance/",performance_router)

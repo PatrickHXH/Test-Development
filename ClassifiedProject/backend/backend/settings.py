@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'users',
     'projects',
     'cases',
-    'tasks'
+    'tasks',
+    'channels'
 ]
 
 MIDDLEWARE = [
@@ -135,3 +136,15 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
+ASGI_APPLICATION = 'backend.routing.application'
+
+CHANNEL_LAYERS = {
+    "default":{
+        "BACKEND":"channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+                "hosts":[("127.0.0.1",6379)],
+        }
+    }
+
+}

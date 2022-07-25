@@ -247,7 +247,7 @@ export default {
             }
           }
           console.log("该模块下选中的用例对象列表：", rows);
-          //遍历用例对象,使用方法objs.forEach((boj) =>{})
+          //遍历用例对象,使用方法objs.forEach((obj) =>{})
           rows.forEach((row) => {
             //输出选中用例对象
             console.log("row", row);
