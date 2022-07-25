@@ -44,6 +44,12 @@
               <template #title> 变量管理</template>
             </el-menu-item>
           </router-link>
+          <router-link to="/main/chat">
+            <el-menu-item index="6" class="menu-option">
+              <i class="el-icon-odometer"></i>
+              <template #title> 性能管理</template>
+            </el-menu-item>
+          </router-link>
         </el-menu>
       </el-aside>
 
