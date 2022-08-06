@@ -120,6 +120,7 @@ export default {
       } else {
         this.$message.error("查询失败！");
       }
+      //setOption为mychart（mychart由echarts.init(document.getElementById("MyChart"))定义 ）方法
       mychart.setOption(this.chartOption);
     },
     // 点击模块节点

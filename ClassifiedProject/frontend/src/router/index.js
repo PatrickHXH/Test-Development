@@ -5,7 +5,7 @@ import caseModule from "../components/case/caseModule.vue";
 import taskList from "../components/task/taskList.vue";
 import reportList from "../components/report/reportList.vue";
 import extractList from "../components/extract/extractList.vue";
-import chat from "../components/performance/chat.vue";
+import performance from "../components/performance/performance.vue";
 
 import Login from "../views/Login.vue";
 import Navigation from "../views/Navigation.vue";
@@ -47,8 +47,8 @@ const routes = [
         component: extractList,
       },
       {
-        path: "chat",
-        component: chat,
+        path: "performance",
+        component: performance,
       },
     ],
   },

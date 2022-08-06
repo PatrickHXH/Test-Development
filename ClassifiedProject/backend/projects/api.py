@@ -13,6 +13,7 @@ from django.shortcuts import get_object_or_404
 from ninja.files import UploadedFile
 import os
 from  backend.settings import IMAGE_DIR
+from cases.models import Module, TestCase
 router = Router(tags=["projects"])
 
 #创建项目接口
@@ -102,3 +103,22 @@ def upload(request, file: UploadedFile = File(...)):
             for chunk in file.chunks():   #file.chunks()类似与file.read()
                 f.write(chunk)
         return response(result={"name":file_name})
+
+@router.get("/{project_id}/cases", auth=None)
+def project_case_list(request, project_id: int):
+    """
+    通过项目ID 获取用例列表
+    auth=None 该接口不需要认证
+    """
+    project = get_object_or_404(Project, id=project_id)
+    if project.is_delete is True:
+        return response(error=Error.PROJECT_IS_DELETE)
+
+    modules = Module.objects.filter(project_id=project.id)
+    cases_list = []
+    for m in modules:
+        cases = TestCase.objects.filter(module_id=m.id)
+        for c in cases:
+            cases_list.append(model_to_dict(c))
+
+    return response(result=cases_list)

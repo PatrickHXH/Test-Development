@@ -34,6 +34,9 @@ class ProjectApi {
       data: data,
     });
   }
+  getProjectCases(id) {
+    return request.get("/api/projects/" + id + "/cases");
+  }
 }
 
 export default new ProjectApi();
