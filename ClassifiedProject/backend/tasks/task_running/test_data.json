@@ -1,1 +1,50 @@
-{"测试用例11212124212": {"case_id": 1, "url": "http://httpbin.org/get", "method": "get", "header": {"totken": "123"}, "params_type": "params", "params_body": {"hello": "wrold"}, "assert_type": "include", "assert_text": "123"}, "测试用例2": {"case_id": 2, "url": "http://httpbin.org/get", "method": "get", "header": {"totken": "123"}, "params_type": "params", "params_body": {"hello": "wrold"}, "assert_type": "include", "assert_text": "123"}, "string123": {"case_id": 3, "url": "string", "method": "get", "header": {}, "params_type": "json", "params_body": {}, "assert_type": "include", "assert_text": "string"}, "string1": {"case_id": 4, "url": "string", "method": "get", "header": {}, "params_type": "params", "params_body": {}, "assert_type": "include", "assert_text": "string"}}
+{
+  "测试用例11212124212": {
+    "case_id": 1,
+    "url": "http://httpbin.org/get",
+    "method": "get",
+    "header": {
+      "totken": "123"
+    },
+    "params_type": "params",
+    "params_body": {
+      "hello": "wrold"
+    },
+    "assert_type": "include",
+    "assert_text": "123"
+  },
+  "测试用例2": {
+    "case_id": 2,
+    "url": "http://httpbin.org/get",
+    "method": "get",
+    "header": {
+      "totken": "123"
+    },
+    "params_type": "params",
+    "params_body": {
+      "hello": "wrold"
+    },
+    "assert_type": "include",
+    "assert_text": "123"
+  },
+  "string123": {
+    "case_id": 3,
+    "url": "string",
+    "method": "get",
+    "header": {},
+    "params_type": "json",
+    "params_body": {},
+    "assert_type": "include",
+    "assert_text": "string"
+  },
+  "string1": {
+    "case_id": 4,
+    "url": "string",
+    "method": "get",
+    "header": {},
+    "params_type": "params",
+    "params_body": {},
+    "assert_type": "include",
+    "assert_text": "string"
+  }
+}

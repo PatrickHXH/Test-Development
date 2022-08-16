@@ -139,6 +139,7 @@ export default {
     },
     // 用户注册
     submitRegister(formName) {
+      console.log(this.$refs[formName].validate())
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // alert('submit!');
